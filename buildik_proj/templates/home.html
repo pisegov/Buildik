@@ -1,0 +1,16 @@
+<!-- templates/home.html -->
+{% extends 'base.html' %}
+{% block title %} Buildik {% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-12 mb-3">
+        {% if user.is_authenticated %}
+        <h4 class="text-center"> Welcome <b>{{ user.username }}</b> </h4>
+        <h5 class="text-center"> Be ready to celebrate and build your PC </h5>
+        {% else %}
+        <h4 class="text-center"> Welcome <i>stranger</i> </h4>
+        <h5 class="text-center"> You may want to <a href="/login">login</a> first </h5>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+img {
+    border: 3px solid #282c34;
+  }
+  .container-fluid {
+    height: 100vh;
+    background: linear-gradient(#e66465, #9198e5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .container-fluid > div {
+    width: 100%;
+    min-width: 100px;
+    max-width: 500px;
+  }
+  .card {
+    background-color:rgba(255, 255, 255, 0.8);
+    border-radius: 25px;
+    width: 100%;
+  }
+  .social-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .btn a, .btn a:hover {
+    color: white;
+    text-decoration: none ;
+  }
