@@ -1,0 +1,513 @@
+.configurator-category-data {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  font-family: 'PT Sans', 'Helvetica', 'Arial', sans-serif;
+  font-size: 16px;
+  line-height: 1.42857;
+  color: #333;
+  box-sizing: border-box;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  height: 100px;
+}
+
+/*! CSS Used from: https://as.dns-shop.ru/assets/3646c117/css/rsu-configurator.css */
+.compatibility-status:before {
+  font-family: 'DNS-icon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+}
+.compatibility-status:before {
+  content: '\e084';
+}
+.category-item-picture i {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+.compatibility-status:before {
+  font-family: 'DNS-icon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+}
+.compatibility-status:before {
+  content: '\e084';
+}
+.compatibility-status:before {
+  font-family: 'DNS-icon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+}
+.compatibility-status:before {
+  content: '\e084';
+}
+.compatibility-status,
+.category-name,
+.category-item-picture,
+.category-item-data,
+.category-controls {
+  display: inline-block;
+  vertical-align: middle;
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .configurator-category .configurator-category-data {
+    padding: 15px 0;
+  }
+}
+@media (max-width: 767px) {
+  .configurator-category .configurator-category-data {
+    padding: 5px 0;
+  }
+}
+.configurator-category-data[data-empty-condition]:hover {
+  -webkit-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+.configurator-category-data[data-empty-condition]:hover .btn-add {
+  background-color: #fff;
+  border-color: #ff4800;
+  color: #ff7f00;
+}
+.compatibility-status {
+  color: #eee;
+  margin-right: 15px;
+  margin-left: 20px;
+}
+@media (max-width: 991px) {
+  .compatibility-status {
+    margin-left: 10px;
+    margin-right: 5px;
+  }
+}
+.category-name {
+  width: 200px;
+  margin-right: 10px;
+}
+.category-name span {
+  margin-right: 5px;
+}
+.category-name .required-marker {
+  font-size: 24px;
+}
+.category-name p {
+  margin: 0;
+}
+.category-name p:empty {
+  display: none;
+}
+.category-name p + p {
+  margin-top: 10px;
+}
+.category-name .configuration-message {
+  font-size: 13px;
+  color: #777;
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .category-name {
+    width: 150px;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .category-name {
+    width: calc(100% - 275px);
+  }
+}
+@media (max-width: 767px) {
+  .category-name {
+    width: calc(100% - 165px);
+  }
+}
+.category-item-picture {
+  position: relative;
+  width: 65px;
+  height: 65px;
+  margin-right: 15px;
+  text-align: center;
+}
+.category-item-picture[data-icon-name='cpu'] i {
+  background-image: url('https://as.dns-shop.ru/assets/3646c117/images/modules/rsu-configurator/categories/cpu.svg');
+}
+
+.category-item-picture[data-icon-name='motherboard'] i {
+  background-image: url('https://as.dns-shop.ru/assets/3646c117/images/modules/rsu-configurator/categories/motherboard.svg');
+}
+
+.category-item-picture[data-icon-name='case'] i {
+  background-image: url('https://as.dns-shop.ru/assets/3646c117/images/modules/rsu-configurator/categories/corpus.svg');
+}
+
+.category-item-picture[data-icon-name='video'] i {
+  background-image: url('https://as.dns-shop.ru/assets/3646c117/images/modules/rsu-configurator/categories/video.svg');
+}
+
+.category-item-picture[data-icon-name='cooler'] i {
+  background-image: url('https://as.dns-shop.ru/assets/3646c117/images/modules/rsu-configurator/categories/cooler.svg');
+}
+
+.category-item-picture[data-icon-name='ram'] i {
+  background-image: url('https://as.dns-shop.ru/assets/3646c117/images/modules/rsu-configurator/categories/ram.svg');
+}
+
+.category-item-picture[data-icon-name='storage'] i {
+  background-image: url('https://as.dns-shop.ru/assets/3646c117/images/modules/rsu-configurator/categories/hdd.svg');
+}
+
+.category-item-picture[data-icon-name='power_supply'] i {
+  background-image: url('https://as.dns-shop.ru/assets/3646c117/images/modules/rsu-configurator/categories/power.svg');
+}
+
+.category-item-picture i {
+  display: inline-block;
+  background: url('https://as.dns-shop.ru/assets/3646c117/images/modules/rsu-configurator/categories/other.svg')
+    no-repeat;
+  width: 47px;
+  height: 47px;
+}
+@media (max-width: 991px) {
+  .configurator-category:not([data-product-guid]) .category-item-data,
+  .configurator-category:not([data-product-guid]) .category-item-picture {
+    display: none;
+  }
+}
+.category-item-data {
+  width: 570px;
+  padding-top: 5px;
+}
+
+.category-item-price {
+  width: 100px;
+  padding-top: 5px;
+}
+
+.category-item-price .price {
+  text-align: right;
+  margin-right: 50px;
+}
+
+.category-item-data .empty-line {
+  height: 5px;
+  width: 75%;
+  background-color: #eee;
+  margin-bottom: 5px;
+}
+
+.category-item-data .not-empty-line {
+  margin-bottom: 5px;
+  width: 50% 75%;
+}
+
+.category-item-data .empty-line:nth-child(even) {
+  width: 55%;
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .category-item-data {
+    width: 440px;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .category-item-data {
+    width: 420px;
+  }
+}
+.category-controls .btn-add {
+  width: 155px;
+  height: 35px;
+  font-weight: 500;
+  border-color: #ddd;
+}
+.category-controls .btn-add:hover,
+.category-controls .btn-add:focus,
+.category-controls .btn-add:active {
+  background-color: #fff;
+  border-color: #0004ff;
+  color: #0044ff;
+}
+.category-controls {
+  width: 260px;
+  text-align: right;
+}
+.category-controls button {
+  padding-left: 0;
+  padding-right: 0;
+}
+.category-controls .btn-add span:before {
+  content: '+';
+  padding-right: 5px;
+}
+@media (max-width: 767px) {
+  .category-controls .btn-add {
+    max-width: 100%;
+  }
+}
+@media (min-width: 992px) {
+  .category-controls {
+    margin-left: -30px;
+  }
+}
+@media (max-width: 991px) {
+  .category-controls {
+    width: auto;
+  }
+}
+@media (max-width: 767px) {
+  .category-controls {
+    width: 100px;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .category-controls {
+    width: 175px;
+  }
+}
+.compatibility-status:before {
+  font-family: 'DNS-icon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+}
+.compatibility-status:before {
+  content: '\e084';
+}
+.compatibility-status:before {
+  font-family: 'DNS-icon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+}
+.compatibility-status:before {
+  content: '\e084';
+}
+/*! CSS Used from: https://as.dns-shop.ru/assets/3646c117/css/theme.css */
+button {
+  margin: 0;
+  font: inherit;
+  color: inherit;
+}
+button {
+  overflow: visible;
+}
+button {
+  text-transform: none;
+}
+button {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+button::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+*,
+:after,
+:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+/*! CSS Used from: https://as.dns-shop.ru/assets/3646c117/css/theme/custom.css */
+.btn {
+  font-weight: 700;
+}
+.btn {
+  padding: 6px 12px;
+  font-size: 16px;
+  line-height: 1.42857;
+  border-radius: 4px;
+}
+.btn:not(.btn-link) {
+  -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+}
+.btn:not(.btn-link):hover {
+  -webkit-box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.1);
+}
+.btn span,
+.btn span:hover {
+  background-color: transparent;
+}
+/*! CSS Used from: https://as.dns-shop.ru/assets/82092da0/bootstrap.min.css */
+.btn {
+  white-space: nowrap;
+}
+button {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+button {
+  overflow: visible;
+}
+button {
+  text-transform: none;
+}
+button {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+button::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+@media print {
+  *,
+  :after,
+  :before {
+    background: 0 0 !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+}
+.btn,
+.btn-default:active,
+.btn:active {
+  background-image: none;
+}
+*,
+:after,
+:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+button {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+p {
+  margin: 0 0 10px;
+}
+.btn {
+  font-weight: 700;
+}
+.btn {
+  vertical-align: middle;
+}
+.btn {
+  display: inline-block;
+  margin-bottom: 0;
+  text-align: center;
+  touch-action: manipulation;
+  cursor: pointer;
+  border: 1px solid transparent;
+  padding: 6px 12px;
+  font-size: 16px;
+  line-height: 1.25;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.btn:active:focus,
+.btn:focus {
+  outline: dotted thin;
+  outline: -webkit-focus-ring-color auto 5px;
+  outline-offset: -2px;
+}
+.btn:active {
+  outline: 0;
+}
+.btn:focus,
+.btn:hover {
+  color: #333;
+  text-decoration: none;
+}
+.btn:active {
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+.btn-default {
+  color: #333;
+  background-color: #fff;
+  border-color: #e3e3e3;
+}
+.btn-default:active,
+.btn-default:focus,
+.btn-default:hover {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #c4c4c4;
+}
+/*! CSS Used from: https://as.dns-shop.ru/assets/3646c117/css/order.css ; media=all */
+@media all {
+  p {
+    margin: 0 0 11px;
+  }
+  * {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+  *:before,
+  *:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+  button {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+  }
+  .btn {
+    font-weight: 700;
+  }
+  .btn {
+    padding: 6px 12px;
+    font-size: 16px;
+    line-height: 1.42857;
+    border-radius: 4px;
+  }
+  .btn:not(.btn-link) {
+    -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  }
+  .btn:not(.btn-link):hover {
+    -webkit-box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.1);
+  }
+  .btn span,
+  .btn span:hover {
+    background-color: transparent;
+  }
+}
+/*! CSS Used fontfaces */
+@font-face {
+  font-family: 'DNS-icon';
+  font-display: swap;
+  font-weight: normal;
+  font-style: normal;
+  src: url(https://as.dns-shop.ru/assets/3646c117/fonts/dns-icons/dns-icon.woff2) format('woff2'),
+    url(https://as.dns-shop.ru/assets/3646c117/fonts/dns-icons/dns-icon.woff) format('woff'),
+    url(https://as.dns-shop.ru/assets/3646c117/fonts/dns-icons/dns-icon.ttf) format('truetype'),
+    url(https://as.dns-shop.ru/assets/3646c117/fonts/dns-icons/dns-icon.eot) format('eot');
+}

@@ -19,6 +19,7 @@ from django.contrib.auth import logout, views as auth_views
 from django.conf import settings
 from rest_framework_swagger.views import get_swagger_view
 from server import views
+from server.views import index
 
 mainurlpatterns = [
     path("login/", views.login, name="login"),
@@ -38,4 +39,5 @@ schema_view = get_swagger_view(title='Buildik API', patterns=mainurlpatterns)
 
 urlpatterns = mainurlpatterns + [
     path('api/docs/', schema_view),
+    path('', index)
 ]

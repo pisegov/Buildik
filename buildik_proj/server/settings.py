@@ -28,7 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-REST_FRAMEWORK = { 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema' }
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'}
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '662028240268-rfjv7qr40r4dr6lm1fgg7ki8ad1nug7u.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '9-rpG0jAtkLghGd01OOlsZq8'
@@ -82,7 +83,7 @@ ROOT_URLCONF = 'server.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATE_DIR,],
+        'DIRS': [TEMPLATE_DIR, BASE_DIR / 'buildik-ui/build'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -92,7 +93,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
             'libraries': {
-                'staticfiles' : 'django.templatetags.static',
+                'staticfiles': 'django.templatetags.static',
             },
         },
     },
@@ -153,3 +154,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'static'
+
+STATICFILES_DIRS = (
+    (BASE_DIR / 'buildik-ui/build/static'),
+)
