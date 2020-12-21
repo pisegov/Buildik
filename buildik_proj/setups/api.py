@@ -6,16 +6,20 @@ import pccomponents.config as conf
 
 
 class SetupsAPI:
-    def get_filter_params(setup: Setup) -> Dict[str, Any]:
+    def get_filter_params(setup: Setup, exclude_item_id: int = None) -> Dict[str, Any]:
         filters = {
-            pcc.item_category_by_number(category[0])+'_number': 0
-            for category in pcc.ITEM_CATEGORY_CHOICES
+            category[1]+'_number': 0
+            for category in pcc.ITEMS
         }
 
-
         for setup_item in SetupItem.objects.filter(setup=setup):
+            if setup_item.item.id == exclude_item_id:
+                continue
+
+            model = pcc.item_class_by_number(setup_item.item.category)
+            model_item = model.objects.get(id=setup_item.item.id)
             item = {
-                **pcc.item_class_by_number(setup_item.item.category).objects.get(id=setup_item.item.id).get_full_item(),
+                **model_item.get_full_item(),
                 'number': setup_item.number,
             }
 
@@ -36,15 +40,29 @@ class SetupsAPI:
 
                 elif field in conf.EQUAL_RELATIONS or\
                      field in conf.GREATER_OR_EQUAL_RELATIONS or\
-                     field in conf.LESS_OR_EQUAL_RELATIONS:
+                     field in conf.LESS_OR_EQUAL_RELATIONS or\
+                     field in list(conf.BELONGING_TO_RELATIONS.values()) or\
+                     field in list(conf.NUMBERED_BELONGING_TO_RELATIONS.values()):
                     filters[field] = item[field]
 
-        # TODO: belongings, having_all
+            for kmodel, l in conf.HAVING_ALL_RELATIONS.items():
+                for t in l:
+                    spec = t[0]._meta.model_name
+                    if spec in item:
+                        if t[2] in filters:
+                            filters[t[2]] += [item[spec]]
+                        else:
+                            filters[t[2]] = [item[spec]]
 
-        filters['total_memory_modules'] = filters['RAM_number']
+            for l in list(conf.NUMBERED_HAVING_ALL_RELATIONS.values()):
+                for t in l:
+                    spec = t[0]._meta.model_name
+                    if spec in item:
+                        if t[2] in filters:
+                            filters[t[2]] = filters[t[2]].update({item[spec]: item['number']})
+                        else:
+                            filters[t[2]] = {item[spec]: item['number']}
 
-        for f in filters:
-            filters[f] = str(filters[f])
-        return filters
+        filters['total_memory_modules'] = filters['ram_number']
 
         return filters

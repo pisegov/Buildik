@@ -16,6 +16,7 @@ ITEMS_INFO: Dict[Type[pcc.Item], Tuple[bool]] = {
 
 MINIMUN_OF_RESTRICTIONS = [
     'max_memory',
+    'max_memory_clock',
     'memory_clock',
 ]
 # MAXIMUM_OF_RESTRICTIONS = []

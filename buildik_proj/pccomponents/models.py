@@ -149,7 +149,7 @@ class CPU(ItemAbstract):
     core_clock = models.FloatField()
     cores = models.IntegerField()
     L3_cache = models.IntegerField()
-    max_ram_clock = models.IntegerField()
+    max_memory_clock = models.IntegerField()
     max_memory = models.IntegerField()
     TDP = models.IntegerField(null=True)
     process = models.IntegerField(null=True)
@@ -160,7 +160,7 @@ class CPU(ItemAbstract):
         'L3_cache': 'MB',
         'TDP': 'W',
         'process': 'nm',
-        'max_ram_clock': 'MHz',
+        'max_memory_clock': 'MHz',
         'max_memory': 'GB',
     }    
 
@@ -171,11 +171,11 @@ class Motherboard(ItemAbstract):
     memorytype = models.ForeignKey(MemoryType, on_delete=models.PROTECT)
     max_memory = models.IntegerField()
     memory_slots = models.IntegerField()
-    max_ram_clock = models.IntegerField()
+    max_memory_clock = models.IntegerField()
 
     measure_units: Dict[str, str] = {
         'max_memory': 'GB',
-        'max_ram_clock': 'MHz',
+        'max_memory_clock': 'MHz',
     }
 
 
@@ -301,7 +301,7 @@ REFERENCES: Dict[Type[Item], List[Tuple[Type[Item], Type[BelongingAbstract], Opt
 
 
 def item_category_by_number(number: int) -> str:
-    for t in ITEM_CATEGORY_CHOICES:
+    for t in ITEMS:
         if t[0] == number:
             return t[1]
     raise ValueError(f'No category with number {number}')

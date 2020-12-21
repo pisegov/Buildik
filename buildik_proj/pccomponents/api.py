@@ -64,7 +64,7 @@ class PCComponentsAPI:
         except:
             raise ValueError("filter cannot be processed, check its correctness")
 
-    def get_items_filtered(category: str, filter_params: Dict[str, Any], error_check:bool=True) -> List[ItemType]:
+    def get_queryset_filtered(category: str, filter_params: Dict[str, Any], error_check:bool=True):
         model = pcc.item_class_by_category(category)
         model_fields = PCComponentsAPI.get_model_fieldnames(model)
 
@@ -77,18 +77,14 @@ class PCComponentsAPI:
             (conf.BELONGING_TO_RELATIONS, '__in'), (conf.NUMBERED_BELONGING_TO_RELATIONS, '__in'),
         ]
 
-        if category+"_number" in filter_params:
-            if setup_conf.ITEMS_INFO[model][0] is False and filter_params[category+'_number']:
-                queryset = model.objects.none()
-
-
         for kfield in conf.EQUAL_RELATIONS:
             if kfield in filter_params:
                 if kfield in model_fields:
                     filters[kfield] = filter_params[kfield]
                 else:
                     errors[kfield] = f'{category} has no field {kfield}'
-                filter_params.pop(kfield)
+                if error_check:
+                    filter_params.pop(kfield)
             
         for filter_case in filter_config:
             for kfield, vfield in filter_case[0].items():
@@ -97,8 +93,9 @@ class PCComponentsAPI:
                         filters[kfield+filter_case[1]] = filter_params[vfield]
                     else:
                         errors[vfield] = f'{category} has no field {kfield} to compare with {vfield}'
-                    filter_params.pop(vfield)
-
+                    if error_check:
+                        filter_params.pop(vfield)
+        
 
         queryset = queryset.filter(**filters)
 
@@ -114,7 +111,8 @@ class PCComponentsAPI:
                             )
                     else:
                         errors[t[2]] = f'{category} has no field to compare with {t[2]}'
-                    filter_params.pop(t[2])
+                    if error_check:
+                        filter_params.pop(t[2])
 
         for m, specs in conf.NUMBERED_HAVING_ALL_RELATIONS.items():
             for t in specs:
@@ -129,7 +127,8 @@ class PCComponentsAPI:
                             )
                     else:
                         errors[t[2]] = f'{category} has no field to compare with {t[2]}'
-                    filter_params.pop(t[2])
+                    if error_check:
+                        filter_params.pop(t[2])
 
 
         for field in filter_params:
@@ -146,7 +145,10 @@ class PCComponentsAPI:
         if error_check and errors != {}:
             raise ValueError(json.dumps(errors))
 
-        return [item.to_json() for item in queryset]
+        return queryset
+
+    def get_items_filtered(category: str, filter_params: Dict[str, Any], error_check:bool=True) -> List[ItemType]:
+        return [item.to_json() for item in PCComponentsAPI.get_queryset_filtered(category, filter_params, error_check)]
 
     def get_specifications(specification: str) -> List[str]:
         return [

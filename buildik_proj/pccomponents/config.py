@@ -1,10 +1,30 @@
 from typing import Dict, List, Tuple, Type
 import pccomponents.models as pcc
 
+# regexs
+
+CATEGORIES_REGEX = ''
+for t in pcc.ITEMS:
+    CATEGORIES_REGEX += t[1] + '|'
+CATEGORIES_REGEX = CATEGORIES_REGEX[:-1]
+
+SPECIFICATIONS_REGEX = ''
+for s in pcc.SPECIFICATIONS:
+    SPECIFICATIONS_REGEX += s + '|'
+SPECIFICATIONS_REGEX = SPECIFICATIONS_REGEX[:-1]
+
+BELONGINGS_REGEX = ''
+for s in pcc.BELONGINGS:
+    BELONGINGS_REGEX += s + '|'
+BELONGINGS_REGEX = BELONGINGS_REGEX[:-1]
+
 # Filter config
 
-# SPECIFICATIONS are part of filter
-EQUAL_RELATIONS = pcc.SPECIFICATIONS.keys()
+EQUAL_RELATIONS: Dict[str, Type[pcc.SpecificationAbstract]] = {
+    'socket': pcc.Socket,
+    'memorytype': pcc.MemoryType,
+    'formfactor': pcc.FormFactor,
+}
 
 # filter(model__field__in=[])
 GREATER_OR_EQUAL_RELATIONS: Dict[str, str] = {
