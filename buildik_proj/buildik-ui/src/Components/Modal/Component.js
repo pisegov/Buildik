@@ -1,7 +1,9 @@
 import React from 'react';
-import { number, string } from 'prop-types';
+import ShortDescription from '../ShortDescription';
 
 function Component(props) {
+  const { component, chooseComponent, close } = props;
+
   return (
     <table
       // id="cfg-goods-345187"
@@ -9,8 +11,8 @@ function Component(props) {
       // cfg_group="chassis"
       // className="one-list-tovar cfg-goods"
       onClick={() => {
-        props.chooseComponent(props.component);
-        props.close();
+        chooseComponent(props.component);
+        close();
       }}
       style={{
         justifyContent: 'space-between',
@@ -25,7 +27,7 @@ function Component(props) {
     >
       <tbody>
         <tr valign="top">
-          <td className="x">{props.component.id}</td>
+          <td className="x">{component.id}</td>
           <td className="goods-thumb">
             <div
               style={{
@@ -38,15 +40,16 @@ function Component(props) {
           </td>
 
           <td className="y">
-            <a className="header title">{props.component.name}</a>
+            <a className="header title">
+              {component.manufacturer} {component.model}
+            </a>
             <br />
-            <span className="descr">{props.component.shortDescr}</span>
+            <ShortDescription component={component} />
           </td>
 
           <td className="z">
             <div className="list-price">
-              <span>{props.component.price}</span>
-              руб.
+              <span>{component.price}</span>
               <br />
             </div>
           </td>

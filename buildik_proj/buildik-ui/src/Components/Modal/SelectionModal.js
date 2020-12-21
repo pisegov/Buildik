@@ -3,6 +3,7 @@ import { Button, Modal } from 'react-bootstrap';
 import { number, string } from 'prop-types';
 import { useCookies } from 'react-cookie';
 import Cookies from 'universal-cookie';
+import axios from 'axios';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../index.css';
@@ -41,6 +42,15 @@ function SelectionModal({ category }) {
     },
   ]);
 
+  useEffect(() => {
+    axios({
+      method: 'GET',
+      url: `http://127.0.0.1:8000/api/pccomponents/category-${category}/`,
+    }).then(response => {
+      setExampleData(response.data);
+    });
+  }, [category]);
+
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -55,10 +65,6 @@ function SelectionModal({ category }) {
     cookies.set(category, comp);
   };
 
-  const componentFromCookies = cookies.get(category);
-  // if (componentFromCookies) setComponent(componentFromCookies);
-  if (componentFromCookies) console.log(componentFromCookies);
-
   const deleteComponent = () => {
     setComponent(null);
     cookies.remove(category);
@@ -66,7 +72,6 @@ function SelectionModal({ category }) {
 
   return (
     <>
-      {/* {setComponent(cookies.get(category))} */}
       <SetupComponent
         category={category}
         component={component}

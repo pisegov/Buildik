@@ -2,6 +2,8 @@
 import '../index.css';
 import './SetupComponent.css';
 import { Button } from 'react-bootstrap';
+import { Strings } from './Strings';
+import ShortDescription from './ShortDescription';
 
 function SetupComponent({ category, component, deleteComponent, modalShow }) {
   const PrintComponent = ({ component, category }) => {
@@ -13,11 +15,10 @@ function SetupComponent({ category, component, deleteComponent, modalShow }) {
             <i />
           </div>
           <div className="category-item-data" data-role="configurator-product-data">
-            <div className="not-empty-line">{`${category} ${component.name}`}</div>
-            <div className="not-empty-line">
-              {component.manufacturer} {component.model}
-            </div>
-            <div className="not-empty-line">Id: {component.id}</div>
+            <div className="not-empty-line">{`${Strings.get(category)} ${component.manufacturer} ${
+              component.model
+            }`}</div>
+            <div className="not-empty-line">{<ShortDescription component={component} />}</div>
           </div>
           <div className="category-item-price">
             <div className="price">
@@ -69,7 +70,7 @@ function SetupComponent({ category, component, deleteComponent, modalShow }) {
       <div className="compatibility-status" data-role="compatibility-status-icon"></div>
       <div className="category-name">
         <p>
-          <span data-role="category-name">{category}</span>
+          <span data-role="category-name">{Strings.get(category)}</span>
         </p>
         <p className="configuration-message" />
       </div>

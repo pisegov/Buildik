@@ -16,6 +16,11 @@
   height: 100px;
 }
 
+.shortDescr {
+  color: rgb(134, 131, 131);
+  font-size: 14px;
+}
+
 /*! CSS Used from: https://as.dns-shop.ru/assets/3646c117/css/rsu-configurator.css */
 .compatibility-status:before {
   font-family: 'DNS-icon' !important;
@@ -142,31 +147,31 @@
   margin-right: 15px;
   text-align: center;
 }
-.category-item-picture[data-icon-name='cpu'] i {
+.category-item-picture[data-icon-name='CPU'] i {
   background-image: url('https://as.dns-shop.ru/assets/3646c117/images/modules/rsu-configurator/categories/cpu.svg');
 }
 
-.category-item-picture[data-icon-name='motherboard'] i {
+.category-item-picture[data-icon-name='Motherboard'] i {
   background-image: url('https://as.dns-shop.ru/assets/3646c117/images/modules/rsu-configurator/categories/motherboard.svg');
 }
 
-.category-item-picture[data-icon-name='case'] i {
+.category-item-picture[data-icon-name='Case'] i {
   background-image: url('https://as.dns-shop.ru/assets/3646c117/images/modules/rsu-configurator/categories/corpus.svg');
 }
 
-.category-item-picture[data-icon-name='video'] i {
+.category-item-picture[data-icon-name='GPU'] i {
   background-image: url('https://as.dns-shop.ru/assets/3646c117/images/modules/rsu-configurator/categories/video.svg');
 }
 
-.category-item-picture[data-icon-name='cooler'] i {
+.category-item-picture[data-icon-name='CPU Cooler'] i {
   background-image: url('https://as.dns-shop.ru/assets/3646c117/images/modules/rsu-configurator/categories/cooler.svg');
 }
 
-.category-item-picture[data-icon-name='ram'] i {
+.category-item-picture[data-icon-name='RAM'] i {
   background-image: url('https://as.dns-shop.ru/assets/3646c117/images/modules/rsu-configurator/categories/ram.svg');
 }
 
-.category-item-picture[data-icon-name='storage'] i {
+.category-item-picture[data-icon-name='Storage'] i {
   background-image: url('https://as.dns-shop.ru/assets/3646c117/images/modules/rsu-configurator/categories/hdd.svg');
 }
 

@@ -10,7 +10,7 @@ const styles = {
   },
 };
 
-const configuratorCategory = ['cpu', 'motherboard', 'case', 'video', 'cooler', 'ram', 'storage', 'power_supply'];
+const configuratorCategory = ['cpu', 'motherboard', 'case', 'gpu', 'cpu_cooler', 'ram', 'storage', 'power_supply_unit'];
 
 function ConfiguratorTable(props) {
   return (
