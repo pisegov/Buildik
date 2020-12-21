@@ -144,3 +144,14 @@ static/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+buildik_proj/buildik-ui/node_modules/axios/CHANGELOG.md
+buildik_proj/buildik-ui/node_modules/axios/index.d.ts
+buildik_proj/buildik-ui/node_modules/axios/index.js
+buildik_proj/buildik-ui/node_modules/axios/LICENSE
+buildik_proj/buildik-ui/node_modules/axios/package.json
+buildik_proj/buildik-ui/node_modules/axios/README.md
+buildik_proj/buildik-ui/node_modules/axios/UPGRADE_GUIDE.md
+
+buildik_proj/buildik-ui/.eslintcache
+buildik_proj/buildik-ui/package-lock.json
+buildik_proj/buildik-ui/package.json
