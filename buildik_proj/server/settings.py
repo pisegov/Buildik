@@ -29,13 +29,32 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 REST_FRAMEWORK = {
-    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'}
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '662028240268-rfjv7qr40r4dr6lm1fgg7ki8ad1nug7u.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '9-rpG0jAtkLghGd01OOlsZq8'
 
-TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
-STATICFILE_DIR = os.path.join(BASE_DIR, 'static')
+
+TEMPLATE_DIR = BASE_DIR / 'server/templates'
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.1/howto/static-files/
+
+# STATICFILE_DIR = BASE_DIR / 'server/static'
+
+STATICFILES_DIRS = (
+    BASE_DIR / 'server/static',
+    BASE_DIR / 'buildik-ui/build/static',
+)
+STATIC_URL = '/static/'
+
+STATIC_ROOT = BASE_DIR / 'static'
+
+
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
@@ -99,10 +118,6 @@ TEMPLATES = [
     },
 ]
 
-STATICFILES_DIRS = [
-    STATICFILE_DIR,
-    BASE_DIR / 'buildik-ui/build/static',
-]
 
 WSGI_APPLICATION = 'server.wsgi.application'
 
@@ -151,12 +166,3 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
-
-STATIC_URL = '/static/'
-# STATIC_ROOT = BASE_DIR / 'static'
-
-# STATICFILES_DIRS = (
-#     (BASE_DIR / 'buildik-ui/build/static'),
-# )

@@ -1,6 +1,7 @@
 import json
-from django.db.models import ForeignKey
-from typing import Any, Dict, List
+from django.db.models import ForeignKey, F, Value
+from django.db.models.functions import Concat
+from typing import Any, Dict, List, Optional
 import pccomponents.models as pcc
 import pccomponents.config as conf
 import setups.config as setup_conf
@@ -19,7 +20,10 @@ class PCComponentsAPI:
         return fields
 
     def get_model_fieldnames(model) -> List[str]:
-        return [field.name for field in model._meta.fields]
+        fields = [field.name for field in model._meta.fields]
+        fields += [field for field in model.computed_fields]
+        # fields.remove('item_ptr')
+        return fields
 
     def get_item(pk: int) -> ItemType:
         try:
@@ -28,17 +32,24 @@ class PCComponentsAPI:
             raise ValueError(f'no item with id {pk}')
         model = pcc.item_class_by_number(item.category)
         return model.objects.get(id=pk).to_json()
+    
+    def get_queryset(model, search_name: Optional[str]=None):
+        queryset = model.objects.all()
+        if search_name is not None:
+            queryset = queryset.annotate(search_name=Concat('manufacturer', Value(' '), 'model'))
+            queryset = queryset.filter(search_name__icontains=search_name)
+        return model.objects.filter(id__in=queryset)
 
-    def get_all_items() -> List[ItemType]:
+    def get_items(category: str, search_name: Optional[str]=None) -> List[ItemType]:
+        model = pcc.item_class_by_category(category)
+        return [item.to_json() for item in PCComponentsAPI.get_queryset(model, search_name)]
+    
+    def get_all_items(search_name: Optional[str]=None) -> List[ItemType]:
         items = []
         for category in pcc.ITEMS:
-            items += [item.to_json() for item in category[2].objects.all()]
+            items += [item.to_json() for item in PCComponentsAPI.get_queryset(category[2], search_name)]
         items.sort(key=lambda x:x['id'])
         return items
-    
-    def get_items(category: str) -> List[ItemType]:
-        model = pcc.item_class_by_category(category)
-        return [item.to_json() for item in model.objects.all()]
 
     def filter_translate_from_query(filter_params: Dict[str, Any]) -> Dict[str, Any]:
         try:
@@ -64,12 +75,25 @@ class PCComponentsAPI:
         except:
             raise ValueError("filter cannot be processed, check its correctness")
 
-    def get_queryset_filtered(category: str, filter_params: Dict[str, Any], error_check:bool=True):
+    def get_queryset_filtered(category: str, filter_params: Dict[str, Any], search_name: Optional[str]=None, error_check:bool=True):
         model = pcc.item_class_by_category(category)
         model_fields = PCComponentsAPI.get_model_fieldnames(model)
 
+        queryset = model.objects
+        if search_name is not None:
+            queryset = queryset.annotate(search_name=Concat('manufacturer', Value(' '), 'model'))
+            queryset = queryset.filter(search_name__icontains=search_name)
 
-        queryset = model.objects.all()
+        # computed values kostyl for ram
+        if model == pcc.RAM:
+            queryset = queryset.annotate(memory=F('module_memory') * F('memory_modules'))
+
+        queryset = queryset.all()
+
+        if setup_conf.ITEMS_INFO[model][0] == False and category+'_number' in filter_params:
+            if filter_params[category+'_number'] > 0:
+                queryset = queryset.none()
+
         filters = {}
         errors = {}
         filter_config = [
@@ -83,8 +107,6 @@ class PCComponentsAPI:
                     filters[kfield] = filter_params[kfield]
                 else:
                     errors[kfield] = f'{category} has no field {kfield}'
-                if error_check:
-                    filter_params.pop(kfield)
             
         for filter_case in filter_config:
             for kfield, vfield in filter_case[0].items():
@@ -93,8 +115,6 @@ class PCComponentsAPI:
                         filters[kfield+filter_case[1]] = filter_params[vfield]
                     else:
                         errors[vfield] = f'{category} has no field {kfield} to compare with {vfield}'
-                    if error_check:
-                        filter_params.pop(vfield)
         
 
         queryset = queryset.filter(**filters)
@@ -111,8 +131,6 @@ class PCComponentsAPI:
                             )
                     else:
                         errors[t[2]] = f'{category} has no field to compare with {t[2]}'
-                    if error_check:
-                        filter_params.pop(t[2])
 
         for m, specs in conf.NUMBERED_HAVING_ALL_RELATIONS.items():
             for t in specs:
@@ -127,28 +145,43 @@ class PCComponentsAPI:
                             )
                     else:
                         errors[t[2]] = f'{category} has no field to compare with {t[2]}'
-                    if error_check:
-                        filter_params.pop(t[2])
 
 
         for field in filter_params:
-            errors[field] = 'unknown field'
-
-        # for f in filter_params:
-        #     filter_params[f] = str(filter_params[f])
-        # return filter_params
-
-        # for f in filters:
-        #     filters[f] = str(filters[f])
-        # return filters
+            if field not in errors:
+                errors[field] = 'unknown field'
 
         if error_check and errors != {}:
             raise ValueError(json.dumps(errors))
 
-        return queryset
+        return model.objects.filter(id__in=queryset.values('id'))
 
-    def get_items_filtered(category: str, filter_params: Dict[str, Any], error_check:bool=True) -> List[ItemType]:
-        return [item.to_json() for item in PCComponentsAPI.get_queryset_filtered(category, filter_params, error_check)]
+    def get_items_filtered(category: str, filter_params: Dict[str, Any], search_name: Optional[str]=None, error_check: bool=True) -> List[ItemType]:
+        model = pcc.item_class_by_category(category)
+        queryset = PCComponentsAPI.get_queryset_filtered(category, filter_params, search_name, error_check)
+        # for f in filter_params:
+        #     filter_params[f] = str(filter_params[f])
+        # return filter_params
+        if model == pcc.RAM and 'free_memory' in filter_params:
+            if 'free_memory_modules' in filter_params:
+                return [
+                    {**item.to_json(), 'max_number': min(
+                        filter_params['free_memory'] // item.memory,
+                        filter_params['free_memory_modules'] // item.memory_modules
+                    )} for item in queryset
+                ]
+            else:
+                return [
+                    {**item.to_json(), 'max_number': filter_params['free_memory'] // item.memory} 
+                    for item in queryset
+                ]
+        elif model == pcc.Storage and 'free_interfaces' in filter_params:
+            return [
+                {**item.to_json(), 'max_number': filter_params['free_interfaces'][item.interface]}
+                for item in queryset
+            ]
+        else:
+            return [item.to_json() for item in queryset]
 
     def get_specifications(specification: str) -> List[str]:
         return [

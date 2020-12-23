@@ -30,6 +30,8 @@ EQUAL_RELATIONS: Dict[str, Type[pcc.SpecificationAbstract]] = {
 GREATER_OR_EQUAL_RELATIONS: Dict[str, str] = {
     'memory_slots': 'total_memory_modules',
     'max_memory': 'total_memory',
+    'free_memory': 'memory',
+    'free_memory_modules': 'memory_modules',
     
     'max_ram_clock': 'memory_clock',
     'max_gpu_length': 'gpu_length',
@@ -42,7 +44,7 @@ BELONGING_TO_RELATIONS: Dict[str, str] = {
 }
 
 NUMBERED_BELONGING_TO_RELATIONS: Dict[str, str] = {
-    'interface': 'interfaces',
+    'interface': 'free_interfaces',
 }
 
 HAVING_ALL_RELATIONS: Dict[Type[pcc.Item], List[Tuple[Type[pcc.BelongingAbstract], str]]] = {
@@ -53,3 +55,7 @@ HAVING_ALL_RELATIONS: Dict[Type[pcc.Item], List[Tuple[Type[pcc.BelongingAbstract
 NUMBERED_HAVING_ALL_RELATIONS: Dict[Type[pcc.Item], List[Tuple[Type[pcc.BelongingAbstract], str]]] = {
     pcc.Motherboard: [(pcc.Interface, pcc.MotherboardInterface, 'required_interfaces')],
 }
+
+OTHER_RELATIONS: List[str] = [
+    'interfaces',
+]

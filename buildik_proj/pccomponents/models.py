@@ -15,13 +15,15 @@ ITEM_CATEGORY_CHOICES: Tuple[int, str] = (
 )
 
 class Item(models.Model):
-    manufacturer = models.CharField(max_length=30, default=None)
-    model = models.CharField(max_length=30, default=None)
+    manufacturer = models.CharField(max_length=50, default=None)
+    model = models.CharField(max_length=50, default=None)
     category = models.IntegerField(choices=ITEM_CATEGORY_CHOICES, default=None)
     price = models.FloatField()
-    # image_url = models.URLField(max_length=200)
+    image_url = models.URLField(max_length=300)
 
-    currency = '$'
+    currency: str = '$'
+    computed_fields: List[str] = []
+    measure_units: Dict[str, str] = {}
 
     class Meta:
         unique_together = ("manufacturer", "model")
@@ -46,13 +48,16 @@ class ItemAbstract(Item):
                             f'with category {item_category_by_number(self.category)}')
     
     def get_item_fields(self) -> Dict[str, Any]:
-        fields = {field.name: getattr(self, field.name) for field in type(self)._meta.fields}
+        model = type(self)
+        fields = {field.name: getattr(self, field.name) for field in model._meta.fields}
+        fields.update({field: getattr(self, field) for field in model.computed_fields})
         fields.pop('item_ptr')
         return fields
     
     def get_full_item(self) -> Dict[str, Any]:
         model = type(self)
         fields = {field.name: getattr(self, field.name) for field in model._meta.fields}
+        fields.update({field: getattr(self, field) for field in model.computed_fields})
         fields.pop('item_ptr')
 
         if model in REFERENCES:
@@ -71,6 +76,7 @@ class ItemAbstract(Item):
     def to_json(self) -> Dict[str, Any]:
         model = type(self)
         jsoned_item = self.get_item_fields()
+        jsoned_item.update({field: getattr(self, field) for field in model.computed_fields})
         jsoned_item['category'] = self.get_category_display()
         jsoned_item['price'] = str(jsoned_item['price']) + Item.currency
 
@@ -132,16 +138,16 @@ class BelongingAbstract(models.Model):
             
 
 class Socket(SpecificationAbstract):
-    socket_name = models.CharField(max_length=30, unique=True, default=None)
+    socket_name = models.CharField(max_length=50, unique=True, default=None)
 
 class MemoryType(SpecificationAbstract):
-    memorytype_name = models.CharField(max_length=30, unique=True, default=None)
+    memorytype_name = models.CharField(max_length=50, unique=True, default=None)
 
 class FormFactor(SpecificationAbstract):
-    formfactor_name = models.CharField(max_length=30, unique=True, default=None)
+    formfactor_name = models.CharField(max_length=50, unique=True, default=None)
 
 class Interface(SpecificationAbstract):
-    interface_name = models.CharField(max_length=30, unique=True, default=None)
+    interface_name = models.CharField(max_length=50, unique=True, default=None)
 
 
 class CPU(ItemAbstract):
@@ -153,7 +159,7 @@ class CPU(ItemAbstract):
     max_memory = models.IntegerField()
     TDP = models.IntegerField(null=True)
     process = models.IntegerField(null=True)
-    integrated_graphics = models.CharField(max_length=30, default=None, null=True)
+    integrated_graphics = models.CharField(max_length=50, default=None, null=True)
 
     measure_units: Dict[str, str] = {
         'core_clock': 'GHz',
@@ -194,12 +200,21 @@ class GPU(ItemAbstract):
 
 
 class RAM(ItemAbstract):
-    memory = models.IntegerField()
+    module_memory = models.IntegerField()
+    memory_modules = models.IntegerField()
     memorytype = models.ForeignKey(MemoryType, on_delete=models.PROTECT)
     memory_clock = models.IntegerField()
 
+    computed_fields: List[str] = [
+        'memory'
+    ]
+    def _get_memory(self) -> int:
+        return self.module_memory * self.memory_modules
+    memory = property(lambda obj: obj.module_memory * obj.memory_modules)
+
     measure_units: Dict[str, str] = {
         'memory': 'GB',
+        'module_memory': 'GB',
         'memory_clock': 'MHz',
     }
 
@@ -219,7 +234,7 @@ class Storage(ItemAbstract):
 class PowerSupplyUnit(ItemAbstract):
     formfactor = models.ForeignKey(FormFactor, on_delete=models.PROTECT)
     wattage = models.IntegerField()
-    efficiency_rating = models.CharField(max_length=30, default=None, null=True)
+    efficiency_rating = models.CharField(max_length=50, default=None, null=True)
 
     measure_units: Dict[str, str] = {
         'wattage': 'W',
@@ -238,7 +253,7 @@ class CPUCooler(ItemAbstract):
     }
 
 class Case(ItemAbstract):
-    case_type = models.CharField(max_length=30, default=None)
+    case_type = models.CharField(max_length=50, default=None)
     max_gpu_length = models.IntegerField()
 
     measure_units: Dict[str, str] = {

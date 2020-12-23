@@ -23,13 +23,13 @@ class SetupList(generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         if 'user' in request.data and request.data['user'] != request.user:
             return Response(
-                {'detail': f'attempt to create setup for different user {request.data["user"]} by {request.user}'}, 
+                {'detail': 'attempt to create setup for different user'}, 
                 status=status.HTTP_403_FORBIDDEN
             )
         name = request.data['name']
         if Setup.objects.filter(user=request.user, name=name):
             return Response(
-                {'detail':f'{request.user} user already has setup called {name}'}, 
+                {'detail':f'user already has setup called {name}'}, 
                 status=status.HTTP_400_BAD_REQUEST
             )
         else:
@@ -59,28 +59,31 @@ def is_item_allowed_for_setup(request, exclude_item_id: int = None):
     except:
         raise ValueError(json.dumps({'detail': 'setup does not exist or belongs to different user'}))
     
-    filters = SetupsAPI.get_filter_params(setup, exclude_item_id=exclude_item_id)
-    filtered_queryset = PCComponentsAPI.get_queryset_filtered(category, filters, False)
+
+    filters = SetupsAPI.get_filter_params_by_setup(setup, exclude_item_id=exclude_item_id)
+    filtered_queryset = PCComponentsAPI.get_queryset_filtered(category, filters, error_check=False)
 
 
-    filtered_queryset = [filtered_item.id for filtered_item in filtered_queryset]
-
-    if item.id in filtered_queryset:
-        if model == pcc.RAM and 'memory_slots' in filters:
-            return filters['memory_slots'] - filters['total_memory_modules'] >= number
-        elif model == pcc.Storage and 'interfaces' in filters:
-            interface = item.interface
-            interfaces = filters['interfaces']
-            required = 0
-            if 'required_interfaces' in filters:
-                if interface in filters['required_interfaces']:
-                    required = filters['required_interfaces'][interface]
-            return interfaces[interface] - required >= number
-        elif setup_conf.ITEMS_INFO[model][0] == False:
-            return number == 1 and filters[category+'_number'] == 0
-        return True
-    else:
+    if not filtered_queryset.filter(id=item.id).exists():
         return False
+
+    if model == pcc.RAM and 'free_memory' in filters:
+        if 'free_memory_modules' in filters:
+            max_number = min(
+                filters['free_memory'] // item.memory,
+                filters['free_memory_modules'] // item.memory_modules,
+            )
+        else:
+            max_number = filters['free_memory'] // item.memory
+    elif model == pcc.Storage and 'free_interfaces' in filters:
+        max_number = filters['free_interfaces'][item.interface]
+    elif setup_conf.ITEMS_INFO[model][0] == False:
+        max_number = 1
+    else:
+        max_number = None
+    
+    return max_number is None or number <= max_number
+
 
 class SetupItemList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -96,7 +99,7 @@ class SetupItemList(generics.ListCreateAPIView):
             try:
                 return Response(json.loads(str(err)), status=status.HTTP_400_BAD_REQUEST)
             except:
-                return Response({'error':str(err)}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'detail':str(err)}, status=status.HTTP_400_BAD_REQUEST)
         # except Exception as err:
         #     return Response({'error':str(err)}, status=status.HTTP_400_BAD_REQUEST)
         
@@ -122,7 +125,7 @@ class SetupItemDetail(generics.RetrieveUpdateDestroyAPIView):
             try:
                 return Response(json.loads(str(err)), status=status.HTTP_400_BAD_REQUEST)
             except:
-                return Response({'error':str(err)}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'detail':str(err)}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as err:
             return Response({'error':str(err)}, status=status.HTTP_400_BAD_REQUEST)
         

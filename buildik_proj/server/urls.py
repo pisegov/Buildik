@@ -19,7 +19,7 @@ from django.contrib.auth import logout, views as auth_views
 from django.conf import settings
 from rest_framework_swagger.views import get_swagger_view
 from server import views
-from server.views import index
+
 
 mainurlpatterns = [
     path("login/", views.login, name="login"),
@@ -32,12 +32,12 @@ mainurlpatterns = [
 
     path('api/pccomponents/', include('pccomponents.urls')),
     path('api/admin/pccomponents/', include('pccomponents.admin_urls')),
-    path('api/setups/', include('setups.urls'))
+    path('api/setups/', include('setups.urls')),
 ]
 
 schema_view = get_swagger_view(title='Buildik API', patterns=mainurlpatterns)
 
 urlpatterns = mainurlpatterns + [
     path('api/docs/', schema_view),
-    path('', index)
+    path('', views.index)
 ]
