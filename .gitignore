@@ -153,5 +153,6 @@ buildik_proj/buildik-ui/node_modules/axios/README.md
 buildik_proj/buildik-ui/node_modules/axios/UPGRADE_GUIDE.md
 
 buildik_proj/buildik-ui/.eslintcache
-buildik_proj/buildik-ui/package-lock.json
-buildik_proj/buildik-ui/package.json
+.eslintcache
+buildik_proj/.*
+buildik_proj/buildik-ui/.*
