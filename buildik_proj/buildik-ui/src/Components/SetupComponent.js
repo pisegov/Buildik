@@ -6,7 +6,7 @@ import { Strings } from './Strings';
 import ShortDescription from './ShortDescription';
 
 function SetupComponent({ category, component, deleteComponent, modalShow }) {
-  const PrintComponent = ({ component, category }) => {
+  const PrintComponent = () => {
     if (component !== null) {
       return (
         <>
@@ -75,7 +75,7 @@ function SetupComponent({ category, component, deleteComponent, modalShow }) {
         <p className="configuration-message" />
       </div>
 
-      <PrintComponent component={component} category={category} />
+      <PrintComponent />
     </div>
   );
 }

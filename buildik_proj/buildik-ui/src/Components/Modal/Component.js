@@ -1,9 +1,7 @@
 import React from 'react';
 import ShortDescription from '../ShortDescription';
 
-function Component(props) {
-  const { component, chooseComponent, close } = props;
-
+function Component({ component, chooseComponent, close }) {
   return (
     <table
       // id="cfg-goods-345187"
@@ -11,7 +9,8 @@ function Component(props) {
       // cfg_group="chassis"
       // className="one-list-tovar cfg-goods"
       onClick={() => {
-        chooseComponent(props.component);
+        console.log(component);
+        chooseComponent(component);
         close();
       }}
       style={{
