@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Modal } from 'react-bootstrap';
-import { number, string } from 'prop-types';
-import { useCookies } from 'react-cookie';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
 
@@ -11,61 +9,100 @@ import '../../index.css';
 import SetupComponent from '../SetupComponent';
 import Component from './Component';
 
-function SelectionModal({ category }) {
-  const [exampleData, setExampleData] = useState([
-    {
-      id: 1,
-      name: 'Some item 1',
-      manufacturer: 'Intel',
-      model: 'Core I3',
-      category,
-      price: '300$',
-      shortDescr: 'Short description of item 1',
-    },
-    {
-      id: 2,
-      name: 'Some item 2',
-      manufacturer: 'AMD',
-      model: 'Rizen 5',
-      category,
-      price: '300$',
-      shortDescr: 'Short description of item 2',
-    },
-    {
-      id: 3,
-      name: 'Some item 3',
-      manufacturer: 'Intel',
-      model: 'Core I9',
-      category,
-      price: '300$',
-      shortDescr: 'Short description of item 3',
-    },
-  ]);
+function SelectionModal({ category, setupID, setSetup, itemList }) {
+  const [categoryComponents, setCategoryComponents] = useState([]);
 
+  const [initItemList, setInitItemList] = itemList;
+  const tempItemList = initItemList;
+
+  // Get category items
   useEffect(() => {
     axios({
       method: 'GET',
       url: `http://127.0.0.1:8000/api/pccomponents/category-${category}/`,
     }).then(response => {
-      setExampleData(response.data);
+      setCategoryComponents(response.data);
     });
   }, [category]);
 
+  // Flag for showing modal window for saving setup
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  // Getting chosen components and csrf token from cookies
   const cookies = new Cookies();
-
   const [component, setComponent] = useState(cookies.get(category) || null);
+  const csrftoken = cookies.get('csrftoken');
 
-  // const [cookies, setCookie, removeCookie] = useCookies([]);
+  // If there is component in this category, it adds component to setup initial list
+  if (component) {
+    tempItemList[category] = { itemID: component.id, number: 1 };
+    setInitItemList(tempItemList);
+  }
 
-  const chooseComponent = comp => {
-    setComponent(comp);
-    cookies.set(category, comp);
+  const [linkID, setLinkID] = useState(null);
+
+  const setItemToSetup = componentID => {
+    try {
+      // Post the component to current setup
+      axios({
+        method: 'POST',
+        url: 'http://127.0.0.1:8000/api/setups/setup_items/',
+        headers: {
+          'X-CSRFToken': csrftoken,
+        },
+        data: {
+          setup: setupID,
+          item: componentID,
+          number: '1',
+        },
+      }).then(res => {
+        if (res) {
+          // Get updated setup
+          axios({
+            method: 'GET',
+            url: `http://127.0.0.1:8000/api/setups/${setupID}`,
+          }).then(response => {
+            setSetup(response.data);
+          });
+
+          setLinkID(res.data.id);
+        }
+      });
+    } catch (e) {
+      console.log(`Error: ${e}`);
+    }
   };
 
-  const deleteComponent = () => {
+  const chooseComponent = component => {
+    setComponent(component);
+    cookies.set(category, component);
+
+    if (setupID) setItemToSetup(component.id);
+    else {
+      tempItemList[category] = { item: component.id, number: 1 };
+      setInitItemList(tempItemList);
+      console.log(initItemList);
+    }
+  };
+
+  const deleteComponent = component => {
+    if (setupID) {
+      console.log(linkID);
+      axios({
+        method: 'DELETE',
+        url: `http://127.0.0.1:8000/api/setups/setup_items/${linkID}`,
+        headers: {
+          'X-CSRFToken': csrftoken,
+        },
+      });
+    } else {
+      delete tempItemList[category];
+      setInitItemList(tempItemList);
+      console.log(initItemList);
+    }
+
     setComponent(null);
     cookies.remove(category);
   };
@@ -84,7 +121,7 @@ function SelectionModal({ category }) {
           <Modal.Title>Select {category}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {exampleData.map(component => {
+          {categoryComponents.map(component => {
             return <Component close={handleClose} chooseComponent={chooseComponent} component={component} />;
           })}
         </Modal.Body>
