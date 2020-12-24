@@ -47,8 +47,8 @@ class SetupItemSerializer(serializers.ModelSerializer):
             'name': str(instance.setup) + " : " + str(instance.item),
             'id': instance.id, 'setup': instance.setup.id, 'item': instance.item.id
         }
-        # if ITEMS_INFO[pcc.item_class_by_number(instance.item.category)][0]:
-        setup_item['number'] = instance.number
+        if ITEMS_INFO[pcc.item_class_by_number(instance.item.category)][0]:
+            setup_item['number'] = instance.number
 
         return setup_item
     

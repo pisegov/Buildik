@@ -82,7 +82,7 @@ class ItemAbstract(Item):
 
         for key in jsoned_item:
             if key in SPECIFICATIONS:
-                jsoned_item[key] = getattr(jsoned_item[key], key+'_name')
+                jsoned_item[key] = getattr(jsoned_item[key], 'name')
 
         if model in REFERENCES:
             for t in REFERENCES[model]:
@@ -103,6 +103,8 @@ class ItemAbstract(Item):
         return jsoned_item
 
 class SpecificationAbstract(models.Model):
+    name = models.CharField(max_length=50, unique=True, default=None)
+    
     class Meta:
         abstract = True
     def save(self, *args, **kwargs) -> None:
@@ -114,12 +116,7 @@ class SpecificationAbstract(models.Model):
         fields = {field.name: getattr(self, field.name) for field in type(self)._meta.fields}
         return fields
     def __str__(self) -> str:
-        name = ''
-        fields = self.get_item_fields()
-        for key in fields:
-            if key != 'id':
-                name += str(fields[key]) + ' '
-        return name[:-1]
+        return self.name
 
 class BelongingAbstract(models.Model):
     class Meta:
@@ -138,16 +135,16 @@ class BelongingAbstract(models.Model):
             
 
 class Socket(SpecificationAbstract):
-    socket_name = models.CharField(max_length=50, unique=True, default=None)
+    pass
 
 class MemoryType(SpecificationAbstract):
-    memorytype_name = models.CharField(max_length=50, unique=True, default=None)
+    pass
 
 class FormFactor(SpecificationAbstract):
-    formfactor_name = models.CharField(max_length=50, unique=True, default=None)
+    pass
 
 class Interface(SpecificationAbstract):
-    interface_name = models.CharField(max_length=50, unique=True, default=None)
+    pass
 
 
 class CPU(ItemAbstract):
@@ -242,12 +239,10 @@ class PowerSupplyUnit(ItemAbstract):
 
 
 class CPUCooler(ItemAbstract):
-    # radiator_size = models.IntegerField()
     min_fan_rpm = models.IntegerField()
     max_fan_rpm = models.IntegerField()
 
     measure_units: Dict[str, str] = {
-        # 'radiator_size': 'mm',
         'min_fan_rpm': 'rpm',
         'max_fan_rpm': 'rpm',
     }

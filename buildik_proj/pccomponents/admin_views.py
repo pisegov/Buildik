@@ -43,18 +43,7 @@ class ItemList(generics.ListCreateAPIView):
 
     def get_serializer_class(self):
         return prepare_serializer(self, prepare_item_model, pccs.ItemSerializer)
-    
-    # def list(self, request, *args, **kwargs):
-    #     try:
-    #         return super(generics.ListCreateAPIView,self).list(request, *args, **kwargs)
-    #     except IntegrityError as err:
-    #         return Response({'error': str(err)}, status=status.HTTP_400_BAD_REQUEST)
 
-    # def create(self, request, *args, **kwargs):
-        # try:
-        #     return super(generics.ListCreateAPIView,self).create(request, *args, **kwargs)
-        # except Exception as err:
-        #     return Response({'error':str(err)}, status=status.HTTP_400_BAD_REQUEST)
 
 class ItemDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAdminUser]

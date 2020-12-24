@@ -22,7 +22,7 @@ class PCComponentsAPI:
     def get_model_fieldnames(model) -> List[str]:
         fields = [field.name for field in model._meta.fields]
         fields += [field for field in model.computed_fields]
-        # fields.remove('item_ptr')
+        fields.remove('item_ptr')
         return fields
 
     def get_item(pk: int) -> ItemType:
@@ -55,14 +55,14 @@ class PCComponentsAPI:
         try:
             for field_name, spec in pcc.SPECIFICATIONS.items():
                 if field_name in filter_params:
-                    filter_params[field_name] = spec.objects.get(**{field_name+'_name':filter_params[field_name]})
+                    filter_params[field_name] = spec.objects.get(**{'name':filter_params[field_name]})
             
             for model in pcc.REFERENCES:
                 for t in pcc.REFERENCES[model]:
                     for field_name in [t[3], "required_"+t[3]]:
                         if field_name in filter_params:
                             queryset = t[0].objects.filter(
-                                **{t[0]._meta.model_name+'_name__in': filter_params[field_name]}
+                                **{'name__in': filter_params[field_name]}
                             )
                             if t[2] is None:
                                 filter_params[field_name] = list(queryset)
@@ -159,9 +159,7 @@ class PCComponentsAPI:
     def get_items_filtered(category: str, filter_params: Dict[str, Any], search_name: Optional[str]=None, error_check: bool=True) -> List[ItemType]:
         model = pcc.item_class_by_category(category)
         queryset = PCComponentsAPI.get_queryset_filtered(category, filter_params, search_name, error_check)
-        # for f in filter_params:
-        #     filter_params[f] = str(filter_params[f])
-        # return filter_params
+
         if model == pcc.RAM and 'free_memory' in filter_params:
             if 'free_memory_modules' in filter_params:
                 return [

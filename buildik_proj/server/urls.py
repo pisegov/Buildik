@@ -26,9 +26,7 @@ mainurlpatterns = [
     path("login/", views.login, name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path('social-auth/', include('social_django.urls', namespace="social")),
-
     path('admin/', admin.site.urls),
-    # path('api-auth/', include('rest_framework.urls')),
 
     path('api/pccomponents/', include('pccomponents.urls')),
     path('api/admin/pccomponents/', include('pccomponents.admin_urls')),

@@ -26,7 +26,7 @@ EQUAL_RELATIONS: Dict[str, Type[pcc.SpecificationAbstract]] = {
     'formfactor': pcc.FormFactor,
 }
 
-# filter(model__field__in=[])
+
 GREATER_OR_EQUAL_RELATIONS: Dict[str, str] = {
     'memory_slots': 'total_memory_modules',
     'max_memory': 'total_memory',

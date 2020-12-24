@@ -21,7 +21,6 @@ MINIMUN_OF_RESTRICTIONS: List[str] = [
     'max_memory_clock',
     'memory_clock',
 ]
-# MAXIMUM_OF_RESTRICTIONS = []
 
 CUMULATIVE_RESTRICTIONS: Dict[str, str] = {
     'memory': 'total_memory',
