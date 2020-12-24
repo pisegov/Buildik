@@ -14,9 +14,9 @@ class SetupSerializer(serializers.ModelSerializer):
             'id': instance.id,
             'name': instance.name,
             'parts': [
-                {'id': setup_item.item.id, 'model': str(setup_item.item), 'number': setup_item.number, 'price': setup_item.item.price} 
+                {'relation': setup_item.id, 'item': setup_item.item.id, 'model': str(setup_item.item), 'number': setup_item.number, 'price': setup_item.item.price} 
                 if ITEMS_INFO[pcc.item_class_by_number(setup_item.item.category)][0] else
-                {'id': setup_item.item.id, 'model': str(setup_item.item), 'price': setup_item.item.price}
+                {'relation': setup_item.id, 'item': setup_item.item.id, 'model': str(setup_item.item), 'price': setup_item.item.price}
                 for setup_item in SetupItem.objects.filter(setup=instance)
             ],
             'total_price': 0
