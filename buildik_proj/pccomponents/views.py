@@ -1,9 +1,8 @@
 import json
 from typing import Optional
 from rest_framework import status, permissions
-from rest_framework.exceptions import APIException
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from pccomponents.api import PCComponentsAPI
 from setups.api import SetupsAPI
 from setups.models import Setup
@@ -45,6 +44,7 @@ def get_category(request, category: str):
         return Response(PCComponentsAPI.get_items(category, search_name))
 
 @api_view()
+@permission_classes([permissions.IsAuthenticated])
 def get_category_for_setup(request, category: str, pk: int, exclude_item_pk: Optional[int] = None):
     search_name = request.GET.get('name')
     try:

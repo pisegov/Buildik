@@ -45,8 +45,11 @@ class SetupDetail(generics.RetrieveUpdateDestroyAPIView):
 
 def is_item_allowed_for_setup(request, exclude_item_id: int = None):
     item = pcc.Item.objects.get(id=request.data['item'])
-    number = request.data['number']
-    number = 1 if number is None or number == '' else int(number)
+    if 'number' in request.data:
+        number = request.data['number']
+        number = 1 if number is None or number == '' else int(number)
+    else:
+        number = 1
 
     model = pcc.item_class_by_number(item.category)
     category = pcc.item_category_by_number(item.category)

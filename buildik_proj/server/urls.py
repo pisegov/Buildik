@@ -22,10 +22,10 @@ from server import views
 
 
 mainurlpatterns = [
+    path("home/", views.home, name="home"),
     path("login/", views.login, name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path('social-auth/', include('social_django.urls', namespace="social")),
-    path("home/", views.home, name="home"),
 
     path('admin/', admin.site.urls),
     # path('api-auth/', include('rest_framework.urls')),
@@ -33,11 +33,12 @@ mainurlpatterns = [
     path('api/pccomponents/', include('pccomponents.urls')),
     path('api/admin/pccomponents/', include('pccomponents.admin_urls')),
     path('api/setups/', include('setups.urls')),
+    path('api/users/', include('users.urls')),
 ]
 
 schema_view = get_swagger_view(title='Buildik API', patterns=mainurlpatterns)
 
 urlpatterns = mainurlpatterns + [
     path('api/docs/', schema_view),
-    path('', views.index)
+    # path('', views.index)
 ]
