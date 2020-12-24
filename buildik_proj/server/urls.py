@@ -33,7 +33,7 @@ mainurlpatterns = [
     path('api/pccomponents/', include('pccomponents.urls')),
     path('api/admin/pccomponents/', include('pccomponents.admin_urls')),
     path('api/setups/', include('setups.urls')),
-    path('api/users/', include('users.urls')),
+    path('api/user/', include('users.urls')),
 ]
 
 schema_view = get_swagger_view(title='Buildik API', patterns=mainurlpatterns)
