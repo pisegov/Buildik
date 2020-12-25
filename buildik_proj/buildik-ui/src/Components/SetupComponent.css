@@ -7,13 +7,14 @@
   box-sizing: border-box;
 
   display: flex;
+  /* display: block; */
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem 1rem;
   border: 2px solid #ccc;
   border-radius: 4px;
   margin-bottom: 0.5rem;
-  height: 100px;
+  /* height: 100px; */
 }
 
 .shortDescr {
@@ -40,6 +41,8 @@
   left: 0;
   right: 0;
   margin: auto;
+  height: 20px;
+  width: 20px;
 }
 .compatibility-status:before {
   font-family: 'DNS-icon' !important;
@@ -68,8 +71,8 @@
 .category-item-picture,
 .category-item-data,
 .category-controls {
-  display: inline-block;
-  vertical-align: middle;
+  display: block;
+  /* vertical-align: middle; */
 }
 @media (min-width: 768px) and (max-width: 991px) {
   .configurator-category .configurator-category-data {
@@ -147,35 +150,35 @@
   margin-right: 15px;
   text-align: center;
 }
-.category-item-picture[data-icon-name='CPU'] i {
+.category-item-picture[data-icon-name='cpu'] i {
   background-image: url('https://as.dns-shop.ru/assets/3646c117/images/modules/rsu-configurator/categories/cpu.svg');
 }
 
-.category-item-picture[data-icon-name='Motherboard'] i {
+.category-item-picture[data-icon-name='motherboard'] i {
   background-image: url('https://as.dns-shop.ru/assets/3646c117/images/modules/rsu-configurator/categories/motherboard.svg');
 }
 
-.category-item-picture[data-icon-name='Case'] i {
+.category-item-picture[data-icon-name='case'] i {
   background-image: url('https://as.dns-shop.ru/assets/3646c117/images/modules/rsu-configurator/categories/corpus.svg');
 }
 
-.category-item-picture[data-icon-name='GPU'] i {
+.category-item-picture[data-icon-name='gpu'] i {
   background-image: url('https://as.dns-shop.ru/assets/3646c117/images/modules/rsu-configurator/categories/video.svg');
 }
 
-.category-item-picture[data-icon-name='CPU Cooler'] i {
+.category-item-picture[data-icon-name='cpu_cooler'] i {
   background-image: url('https://as.dns-shop.ru/assets/3646c117/images/modules/rsu-configurator/categories/cooler.svg');
 }
 
-.category-item-picture[data-icon-name='RAM'] i {
+.category-item-picture[data-icon-name='ram'] i {
   background-image: url('https://as.dns-shop.ru/assets/3646c117/images/modules/rsu-configurator/categories/ram.svg');
 }
 
-.category-item-picture[data-icon-name='Storage'] i {
+.category-item-picture[data-icon-name='storage'] i {
   background-image: url('https://as.dns-shop.ru/assets/3646c117/images/modules/rsu-configurator/categories/hdd.svg');
 }
 
-.category-item-picture[data-icon-name='power_supply'] i {
+.category-item-picture[data-icon-name='power_supply_unit'] i {
   background-image: url('https://as.dns-shop.ru/assets/3646c117/images/modules/rsu-configurator/categories/power.svg');
 }
 
@@ -203,7 +206,6 @@
 }
 
 .category-item-price .price {
-  text-align: right;
   margin-right: 50px;
 }
 
@@ -215,6 +217,7 @@
 }
 
 .category-item-data .not-empty-line {
+  padding-left: 20px;
   margin-bottom: 5px;
   width: 50% 75%;
 }
@@ -246,7 +249,7 @@
   color: #0044ff;
 }
 .category-controls {
-  width: 260px;
+  width: 200px;
   text-align: right;
 }
 .category-controls button {
