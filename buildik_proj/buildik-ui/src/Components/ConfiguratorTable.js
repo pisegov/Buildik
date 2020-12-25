@@ -4,6 +4,7 @@ import SelectionModal from './Modal/SelectionModal';
 import axios from 'axios';
 import { Modal } from 'react-bootstrap';
 import NameForm from './NameForm';
+import Cookies from 'universal-cookie';
 
 const styles = {
   ul: {
@@ -25,9 +26,23 @@ const configuratorCategories = [
 ];
 
 function ConfiguratorTable(props) {
-  const [setup, setSetup] = useState({});
+  const [setup, setSetup] = useState(null);
   const [setupID, setSetupID] = useState(null);
-  const [initItemList, setInitItemList] = useState({});
+  const [initItemList, setInitItemList] = useState([]);
+
+  useEffect(() => {
+    const cookies = new Cookies();
+    const tempItemList = initItemList;
+    configuratorCategories.map(category => {
+      const savedItem = cookies.get(category);
+
+      if (savedItem) {
+        tempItemList.push([savedItem.id, 1]);
+      }
+    });
+    setInitItemList(tempItemList);
+    console.log(initItemList);
+  }, []);
 
   const [showSave, setShowSave] = useState(false);
   const handleClose = () => setShowSave(false);
@@ -47,7 +62,7 @@ function ConfiguratorTable(props) {
             <SelectionModal
               category={category}
               setSetup={setSetupWithID}
-              setupID={setupID}
+              setup={setup}
               itemList={[initItemList, setInitItemList]}
             />
           );

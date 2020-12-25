@@ -25,9 +25,10 @@ export default function NameForm({ setSetup, initList }) {
         console.log(res);
         console.log(res.data);
 
-        Object.entries(initItemList).map(([key, value]) => {
+        // Object.entries(initItemList).map(([key, value]) => {
+        initItemList.map(pair => {
           console.log(`Setup id: ${res.data.id}`);
-          console.log(`Item: ${JSON.stringify(value)}`);
+          console.log(`Item: ${pair}`);
 
           axios({
             method: 'POST',
@@ -37,8 +38,8 @@ export default function NameForm({ setSetup, initList }) {
             },
             data: {
               setup: res.data.id,
-              item: value.itemID,
-              number: value.number,
+              item: pair[0],
+              number: pair[1],
             },
           }).then();
         });

@@ -9,21 +9,34 @@ import '../../index.css';
 import SetupComponent from '../SetupComponent';
 import Component from './Component';
 
-function SelectionModal({ category, setupID, setSetup, itemList }) {
+function SelectionModal({ category, setup, setSetup, itemList }) {
   const [categoryComponents, setCategoryComponents] = useState([]);
 
   const [initItemList, setInitItemList] = itemList;
   const tempItemList = initItemList;
 
+  let urlTail = '';
+
+  if (initItemList.length) {
+    urlTail += '?filter-items=[';
+    initItemList.map(element => {
+      urlTail += `[${element[0]},${element[1]}],`;
+    });
+    urlTail = urlTail.slice(0, -1);
+    urlTail += ']';
+  }
+
   // Get category items
   useEffect(() => {
+    console.log(urlTail);
     axios({
       method: 'GET',
-      url: `http://127.0.0.1:8000/api/pccomponents/category-${category}/`,
+      url: `http://127.0.0.1:8000/api/pccomponents/category-${category}/${urlTail}`,
+      // url: `http://127.0.0.1:8000/api/pccomponents/category-${category}/`,
     }).then(response => {
       setCategoryComponents(response.data);
     });
-  }, [category]);
+  }, [urlTail, setup, initItemList]);
 
   // Flag for showing modal window for saving setup
   const [show, setShow] = useState(false);
@@ -34,12 +47,6 @@ function SelectionModal({ category, setupID, setSetup, itemList }) {
   const cookies = new Cookies();
   const [component, setComponent] = useState(cookies.get(category) || null);
   const csrftoken = cookies.get('csrftoken');
-
-  // If there is component in this category, it adds component to setup initial list
-  if (component) {
-    tempItemList[category] = { itemID: component.id, number: 1 };
-    setInitItemList(tempItemList);
-  }
 
   const [linkID, setLinkID] = useState(null);
 
@@ -53,7 +60,7 @@ function SelectionModal({ category, setupID, setSetup, itemList }) {
           'X-CSRFToken': csrftoken,
         },
         data: {
-          setup: setupID,
+          setup: setup.id,
           item: componentID,
           number: '1',
         },
@@ -62,7 +69,7 @@ function SelectionModal({ category, setupID, setSetup, itemList }) {
           // Get updated setup
           axios({
             method: 'GET',
-            url: `http://127.0.0.1:8000/api/setups/${setupID}`,
+            url: `http://127.0.0.1:8000/api/setups/${setup.id}`,
           }).then(response => {
             setSetup(response.data);
           });
@@ -79,16 +86,17 @@ function SelectionModal({ category, setupID, setSetup, itemList }) {
     setComponent(component);
     cookies.set(category, component);
 
-    if (setupID) setItemToSetup(component.id);
+    if (setup) setItemToSetup(component.id);
     else {
-      tempItemList[category] = { item: component.id, number: 1 };
+      tempItemList.push([component.id, 1]);
+
+      //   tempItemList[category] = { item: component.id, number: 1 };
       setInitItemList(tempItemList);
-      console.log(initItemList);
     }
   };
 
   const deleteComponent = component => {
-    if (setupID) {
+    if (setup) {
       console.log(linkID);
       axios({
         method: 'DELETE',
@@ -96,11 +104,34 @@ function SelectionModal({ category, setupID, setSetup, itemList }) {
         headers: {
           'X-CSRFToken': csrftoken,
         },
+      }).then(res => {
+        if (res) {
+          // Get updated setup
+          axios({
+            method: 'GET',
+            url: `http://127.0.0.1:8000/api/setups/${setup.id}`,
+          }).then(response => {
+            setSetup(response.data);
+          });
+        }
       });
     } else {
-      delete tempItemList[category];
+      const element = [component.id, 1];
+      let counter = 0;
+
+      for (let i = 0; i < tempItemList.length; ++i) {
+        if (tempItemList[i][0] === component.id) {
+          break;
+        }
+        ++counter;
+      }
+
+      console.log('Delete method index ' + counter);
+      console.log('Delete method component id ' + component.id);
+
+      // const index = tempItemList.indexOf([Number(component.id), 1]);
+      tempItemList.splice(counter, 1);
       setInitItemList(tempItemList);
-      console.log(initItemList);
     }
 
     setComponent(null);
