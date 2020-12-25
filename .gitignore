@@ -156,3 +156,4 @@ buildik_proj/buildik-ui/.eslintcache
 .eslintcache
 buildik_proj/.*
 buildik_proj/buildik-ui/.*
+buildik_proj/node_modules
