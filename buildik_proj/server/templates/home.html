@@ -25,10 +25,22 @@
         <a class="btn btn-danger  mb-2" href='/logout/'>
             Logout
         </a>
-        <a class="btn btn-danger  mb-2" href='/user/delete/'>
+
+        <!-- <a class="btn btn-danger  mb-2" href='/user/delete/'> -->
+        <button type="submit" class="btn btn-danger  mb-2" onclick="clicked()">
             Delete user
-        </a>
+        </button>
+        <!-- </a> -->
     </div>
     {% endif %}
 </div>
+
+<script type="text/javascript">
+    function clicked() {
+       if (confirm('Do you want to delete your user?')) {
+            location.replace("/user/delete");
+       } 
+    }
+</script>
+
 {% endblock %}
