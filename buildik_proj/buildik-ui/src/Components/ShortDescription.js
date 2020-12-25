@@ -7,7 +7,16 @@ export default function ShortDescription({ component }) {
       <span>[</span>
       <span>
         {Object.entries(component).map(([key, value]) => {
-          if (key !== 'id' && key !== 'price' && key !== 'manufacturer' && key !== 'model' && key !== 'category')
+          if (
+            key !== 'image_url' &&
+            key !== 'number' &&
+            key !== 'id' &&
+            key !== 'price' &&
+            key !== 'manufacturer' &&
+            key !== 'model' &&
+            key !== 'category' &&
+            key !== 'interfaces'
+          )
             return <span>{`${Strings.get(key)}: ${value}, `}</span>;
         })}
       </span>
