@@ -37,7 +37,10 @@ export const Strings = new Map([
   ['case_type', 'Тип корпуса'],
   ['max_gpu_length', 'Максимальная длина видеокарты'],
   ['formfactors', 'Формфактор материнской платы'],
-  [],
+  ['wattage', 'Мощность'],
+  ['efficiency_rating', 'Стандарт эффективности'],
+  ['type', 'Тип'],
+  ['memory_modules', 'Количество модулей памяти'],
 ]);
 
 export const shortStrings = new Map([
