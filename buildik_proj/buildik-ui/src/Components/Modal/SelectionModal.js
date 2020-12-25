@@ -28,7 +28,6 @@ function SelectionModal({ category, setup, setSetup, itemList }) {
 
   // Get category items
   useEffect(() => {
-    console.log(urlTail);
     axios({
       method: 'GET',
       url: `http://127.0.0.1:8000/api/pccomponents/category-${category}/${urlTail}`,
@@ -125,9 +124,6 @@ function SelectionModal({ category, setup, setSetup, itemList }) {
         }
         ++counter;
       }
-
-      console.log('Delete method index ' + counter);
-      console.log('Delete method component id ' + component.id);
 
       // const index = tempItemList.indexOf([Number(component.id), 1]);
       tempItemList.splice(counter, 1);

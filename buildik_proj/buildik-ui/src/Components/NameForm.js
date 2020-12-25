@@ -22,14 +22,8 @@ export default function NameForm({ setSetup, initList }) {
         },
         data: { name },
       }).then(res => {
-        console.log(res);
-        console.log(res.data);
-
         // Object.entries(initItemList).map(([key, value]) => {
         initItemList.map(pair => {
-          console.log(`Setup id: ${res.data.id}`);
-          console.log(`Item: ${pair}`);
-
           axios({
             method: 'POST',
             url: 'http://127.0.0.1:8000/api/setups/setup_items/',

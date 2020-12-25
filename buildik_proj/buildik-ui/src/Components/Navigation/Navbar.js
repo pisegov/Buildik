@@ -16,8 +16,6 @@ function Navbar() {
   //     })
   // }, [])
 
-  // console.log(categories)
-
   return (
     <div className="Navbar">
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
