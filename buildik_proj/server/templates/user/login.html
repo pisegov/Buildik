@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title1 %} Login {% endblock %}
+{% block title2 %} Login {% endblock %}
+{% block content %}
+
+<h6>
+    <form class="text-center" action="/user/login/" method="post">
+        {{ form.as_p }}
+        {% csrf_token %}
+        {% if 'fail' in request.GET %}
+                Fail to login, try again
+        {% endif %}
+        <div class="col-md-8 mx-auto social-container my-2 order-md-1">
+            <button class="btn btn-primary mb-2">
+                Login
+            </button>
+        </div>
+    </form>
+</h6>
+
+{% endblock %}

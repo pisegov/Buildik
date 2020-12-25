@@ -1,10 +1,12 @@
 <!-- templates/home.html -->
 {% extends 'base.html' %}
-{% block title %} Buildik {% endblock %}
+{% block title1 %} Home {% endblock %}
+{% block title2 %} Buildik {% endblock %}
 {% block content %}
 <div class="row">
     <div class="col-sm-12 mb-3">
         {% if user.is_authenticated %}
+        <!-- <a href="/user"></a> -->
         <h4 class="text-center"> Welcome <b>
             {% if user.first_name or user.last_name %}
             {{ user.first_name }} {{ user.last_name }}
@@ -12,11 +14,21 @@
             {{ user.username }}
             {% endif %}
         </b></h4>
-        <h5 class="text-center"> Be ready to celebrate and build your PC </h5>
+        <h5 class="text-center"> Be ready to celebrate and <a href="/">build your PC</a> </h5>
         {% else %}
         <h4 class="text-center"> Welcome <i>stranger</i> </h4>
         <h5 class="text-center"> You may want to <a href="/login">login</a> first </h5>
         {% endif %}
     </div>
+    {% if user.is_authenticated %}
+    <div class="col-md-8 mx-auto social-container my-2 order-md-1">
+        <a class="btn btn-danger  mb-2" href='/logout/'>
+            Logout
+        </a>
+        <a class="btn btn-danger  mb-2" href='/user/delete/'>
+            Delete user
+        </a>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

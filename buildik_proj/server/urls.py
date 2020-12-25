@@ -19,6 +19,7 @@ from django.contrib.auth import logout, views as auth_views
 from django.conf import settings
 from rest_framework_swagger.views import get_swagger_view
 from server import views
+from users import views as user_views
 
 
 mainurlpatterns = [
@@ -27,16 +28,17 @@ mainurlpatterns = [
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path('social-auth/', include('social_django.urls', namespace="social")),
     path('admin/', admin.site.urls),
+    path('user/', include('users.urls')),
 
     path('api/pccomponents/', include('pccomponents.urls')),
     path('api/admin/pccomponents/', include('pccomponents.admin_urls')),
     path('api/setups/', include('setups.urls')),
-    path('api/user/', include('users.urls')),
+    path('api/user/', user_views.get_user),
 ]
 
 schema_view = get_swagger_view(title='Buildik API', patterns=mainurlpatterns)
 
 urlpatterns = mainurlpatterns + [
     path('api/docs/', schema_view),
-    # path('', views.index)
+    path('', views.index),
 ]

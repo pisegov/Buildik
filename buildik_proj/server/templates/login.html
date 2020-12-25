@@ -1,19 +1,27 @@
 <!-- templates/login.html -->
 {% extends 'base.html' %}
-{% block title %} Sign in {% endblock %}
+{% block title1 %} Login {% endblock %}
+{% block title2 %} Sign in {% endblock %}
 {% block content %}
 <div class="row">
     {% if user.is_authenticated %}
-    <div class="col-sm-12 mb-3">
-        <h4 class="text-center"> You are logged in as <b>{{ user.username }}</b> </h4>
-        <h5 class="text-center"> Do you want to <a href="/logout">logout</a>? </h5>
-    </div>
+        <div class="col-sm-12 mb-3">
+            <h4 class="text-center"> You are logged in as <b>{{ user.username }}</b> </h4>
+            <h5 class="text-center"> Do you want to <a href="/logout">logout</a>? </h5>
+        </div>
     {% else %}
-    <div class="col-md-8 mx-auto social-container my-2 order-md-1">
-        <a class="btn btn-primary mb-2" href="{% url 'social:begin' 'google-oauth2' %}">
-            Login with Google
-        </a>
-    </div>
+        <div class="col-md-8 mx-auto social-container my-2 order-md-1">
+            <a class="btn btn-info mb-2" href="/user/signup">
+                Sign up
+            </a>
+
+            <a class="btn btn-primary mb-2" href="/user/login">
+                Login
+            </a>
+            <a class="btn btn-primary mb-2" href="{% url 'social:begin' 'google-oauth2' %}">
+                Login with Google
+            </a>
+        </div>
     {% endif %}
 </div>
 </div>
