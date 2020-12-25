@@ -41,7 +41,6 @@ function ConfiguratorTable(props) {
       }
     });
     setInitItemList(tempItemList);
-    console.log(initItemList);
   }, []);
 
   const [showSave, setShowSave] = useState(false);
