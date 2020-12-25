@@ -31,7 +31,6 @@ function SelectionModal({ category, setup, setSetup, itemList }) {
     axios({
       method: 'GET',
       url: `http://127.0.0.1:8000/api/pccomponents/category-${category}/${urlTail}`,
-      // url: `http://127.0.0.1:8000/api/pccomponents/category-${category}/`,
     }).then(response => {
       setCategoryComponents(response.data);
     });
@@ -46,8 +45,6 @@ function SelectionModal({ category, setup, setSetup, itemList }) {
   const cookies = new Cookies();
   const [component, setComponent] = useState(cookies.get(category) || null);
   const csrftoken = cookies.get('csrftoken');
-
-  const [linkID, setLinkID] = useState(null);
 
   const setItemToSetup = componentID => {
     try {
@@ -96,10 +93,14 @@ function SelectionModal({ category, setup, setSetup, itemList }) {
 
   const deleteComponent = component => {
     if (setup) {
-      console.log(linkID);
+      let link = 0;
+      setup.parts.map(comp => {
+        if (comp.item === component.id) link = comp.relation;
+      });
+
       axios({
         method: 'DELETE',
-        url: `http://127.0.0.1:8000/api/setups/setup_items/${linkID}`,
+        url: `http://127.0.0.1:8000/api/setups/setup_items/${link}`,
         headers: {
           'X-CSRFToken': csrftoken,
         },
