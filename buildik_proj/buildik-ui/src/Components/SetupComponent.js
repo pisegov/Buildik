@@ -10,8 +10,18 @@ function SetupComponent({ category, component, deleteComponent, modalShow }) {
     if (component !== null) {
       return (
         <>
-          {/* <p>{`Component id: ${component.id}`}</p> */}
-          <div className="category-item-picture" data-role="configurator-product-image" data-icon-name={category}>
+          <div
+            // className="category-item-picture"
+            style={{
+              backgroundImage: `url("${component.image_url}")`,
+              backgroundPosition: 'center',
+              backgroundSize: '100% auto',
+              backgroundRepeat: 'no-repeat',
+              width: '100px',
+              height: '100px',
+              color: 'white',
+            }}
+          >
             <i />
           </div>
           <div className="category-item-data" data-role="configurator-product-data">
@@ -21,17 +31,19 @@ function SetupComponent({ category, component, deleteComponent, modalShow }) {
             <div className="not-empty-line">{<ShortDescription component={component} />}</div>
           </div>
           <div className="category-item-price">
-            <div className="price">
+            <div className="price" style={{ marginLeft: '10px' }}>
               <strong>{component.price}</strong>
             </div>
           </div>
 
           <div className="category-controls" data-role="configurator-controls">
-            <Button data-role="show-catalog" variant="primary" onClick={modalShow}>
+            {/* <Button data-role="show-catalog" variant="primary" onClick={modalShow}>
               Change
             </Button>
-            {'  '}
+            {'  '} */}
             <Button
+              className="btn btn-default btn-add"
+              data-role="show-catalog"
               variant="primary"
               onClick={() => {
                 deleteComponent(component);

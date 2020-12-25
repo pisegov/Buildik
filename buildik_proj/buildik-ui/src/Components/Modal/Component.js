@@ -4,12 +4,7 @@ import ShortDescription from '../ShortDescription';
 function Component({ component, chooseComponent, close }) {
   return (
     <table
-      // id="cfg-goods-345187"
-      // cfg_id={345187}
-      // cfg_group="chassis"
-      // className="one-list-tovar cfg-goods"
       onClick={() => {
-        console.log(component);
         chooseComponent(component);
         close();
       }}
@@ -30,11 +25,17 @@ function Component({ component, chooseComponent, close }) {
           <td className="goods-thumb">
             <div
               style={{
-                width: '40px',
-                height: '40px',
-                // background: 'url(/cpreview40/shop/345187.jpg) no-repeat 0 0'
+                width: '80px',
+                height: '80px',
+                backgroundImage: `url("${component.image_url}")`,
+                backgroundPosition: 'center',
+                backgroundSize: '100% auto',
+                backgroundRepeat: 'no-repeat',
+                color: 'white',
               }}
-            ></div>
+            >
+              <i />
+            </div>
             <span className="mask"></span>
           </td>
 
