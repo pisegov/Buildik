@@ -38,5 +38,5 @@ schema_view = get_swagger_view(title='Buildik API', patterns=mainurlpatterns)
 
 urlpatterns = mainurlpatterns + [
     path('api/docs/', schema_view),
-    # path('', views.index)
+    path('', views.index)
 ]
