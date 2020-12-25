@@ -220,6 +220,7 @@ class Storage(ItemAbstract):
     interface = models.ForeignKey(Interface, on_delete=models.PROTECT)
     capacity = models.IntegerField()
     cache = models.IntegerField()
+    type = models.CharField(max_length=50, default=None)
 
 
     measure_units: Dict[str, str] = {
