@@ -69,8 +69,6 @@ function SelectionModal({ category, setup, setSetup, itemList }) {
           }).then(response => {
             setSetup(response.data);
           });
-
-          setLinkID(res.data.id);
         }
       });
     } catch (e) {
@@ -116,7 +114,6 @@ function SelectionModal({ category, setup, setSetup, itemList }) {
         }
       });
     } else {
-      const element = [component.id, 1];
       let counter = 0;
 
       for (let i = 0; i < tempItemList.length; ++i) {
