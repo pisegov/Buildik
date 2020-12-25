@@ -1,17 +1,19 @@
 from django.shortcuts import redirect, render
-from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, update_session_auth_hash
+from django.contrib.auth.decorators import login_required
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from users.models import User
-from users.forms import LoginForm, SignUpForm
+from django.contrib.auth.forms import PasswordChangeForm
+from users.forms import LoginForm, SignUpForm, UpdateForm
+
 
 @api_view()
 @permission_classes([permissions.IsAuthenticated])
 def get_user(request):
-    jsoned_user = {field.name: getattr(request.user, field.name) for field in User._meta.fields}
-    jsoned_user.pop('password')
-    return Response(jsoned_user)
+    return Response(request.user.to_json())
 
 
 def delete_user(request):
@@ -21,6 +23,43 @@ def delete_user(request):
         return redirect('/logout/')
     else:
         return redirect('/home/')
+
+
+@login_required
+def show_user(request):
+    return render(request, 'user/user.html', {'isSocial': request.user.isSocial()})
+
+
+@login_required
+def update_user(request):
+    if request.user.isSocial():
+        return redirect('/user')
+    if request.method == 'POST':
+        form = UpdateForm(data=request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('/user')
+    else:
+        form = UpdateForm(initial={field: getattr(request.user, field) for field in UpdateForm.Meta.fields})
+    return render(request, 'user/update.html', {'form': form})
+
+
+@login_required
+def change_password(request):
+    if request.user.isSocial():
+        return redirect('/user')
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('/user')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'user/change_password.html', {'form': form})
 
 
 def user_signup(request):

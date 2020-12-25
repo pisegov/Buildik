@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title1 %} User {% endblock %}
+{% block title2 %} User {% endblock %}
+{% block content %}
+<h6>
+    <div class="col-sm-12 mb-3">
+        <h5 class="text-center">{{ user.username }}</h5>
+        {% if user.is_superuser %}
+        <h5 class="text-center"><b>Admin</b></h5>
+        {% elif isSocial %}
+        <h5 class="text-center"><b>Social</b></h5>
+        {% endif %}
+        <h6 >{% if user.first_name %}First name: {{ user.first_name }}{% endif %}</h6>
+        <h6 >{% if user.last_name %}Last name: {{ user.last_name }}{% endif %}</h6>
+        <h6 >{% if user.email %}Email: {{ user.email }}{% endif %}</h6>
+    </div>
+    <div class="col-md-8 mx-auto social-container my-2 order-md-1">
+        <a class="btn btn-primary mb-2" href='/logout/'>
+            Logout
+        </a>
+
+        {% if not isSocial %}
+        <a class="btn btn-info mb-2" href='/user/update/'>
+            Update
+        </a>
+        <a class="btn btn-info mb-2" href='/user/password/'>
+            Change password
+        </a>
+        {% endif %}
+
+        <button type="submit" class="btn btn-danger  mb-2" onclick="clicked()">
+            Delete user
+        </button>
+    </div>
+</h6>
+
+<script type="text/javascript">
+    function clicked() {
+       if (confirm('Do you want to delete your user?')) {
+            location.replace("/user/delete");
+       } 
+    }
+</script>
+
+{% endblock %}

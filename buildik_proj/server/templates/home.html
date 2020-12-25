@@ -7,40 +7,20 @@
     <div class="col-sm-12 mb-3">
         {% if user.is_authenticated %}
         <!-- <a href="/user"></a> -->
-        <h4 class="text-center"> Welcome <b>
+        <h4 class="text-center"> Welcome <b><a href='/user/'>
             {% if user.first_name or user.last_name %}
             {{ user.first_name }} {{ user.last_name }}
             {% else %}
             {{ user.username }}
             {% endif %}
-        </b></h4>
+        </a></b></h4>
         <h5 class="text-center"> Be ready to celebrate and <a href="/">build your PC</a> </h5>
         {% else %}
         <h4 class="text-center"> Welcome <i>stranger</i> </h4>
         <h5 class="text-center"> You may want to <a href="/login">login</a> first </h5>
         {% endif %}
     </div>
-    {% if user.is_authenticated %}
-    <div class="col-md-8 mx-auto social-container my-2 order-md-1">
-        <a class="btn btn-danger  mb-2" href='/logout/'>
-            Logout
-        </a>
-
-        <!-- <a class="btn btn-danger  mb-2" href='/user/delete/'> -->
-        <button type="submit" class="btn btn-danger  mb-2" onclick="clicked()">
-            Delete user
-        </button>
-        <!-- </a> -->
-    </div>
-    {% endif %}
 </div>
 
-<script type="text/javascript">
-    function clicked() {
-       if (confirm('Do you want to delete your user?')) {
-            location.replace("/user/delete");
-       } 
-    }
-</script>
 
 {% endblock %}
