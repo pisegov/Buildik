@@ -41,7 +41,7 @@ function Navbar({ sessionId }) {
             </div>
           </a>
           <a className="navbar-brand" href="#">
-            <div className="nav-link" onClick={openAdmin}>
+            <div className="nav-link" onClick={openAPI}>
               API
             </div>
           </a>
