@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import ShortDescription from './ShortDescription';
 import { Button } from 'react-bootstrap';
 import Cookies from 'universal-cookie';
 
@@ -30,8 +29,6 @@ function SetupsPage({ sessionId }) {
         setSetups(response.data);
       });
     }, []);
-
-    console.log(setups);
 
     function deleteSetup(setup) {
       axios({
