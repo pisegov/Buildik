@@ -157,3 +157,4 @@ buildik_proj/buildik-ui/.eslintcache
 buildik_proj/.*
 buildik_proj/buildik-ui/.*
 buildik_proj/node_modules
+buildik_proj/server/secrets.py

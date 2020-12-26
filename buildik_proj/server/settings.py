@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 import os
 from pathlib import Path
+from server.secrets import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,9 +20,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '-eb6%co%$u4nmj#uof7i5=#%)4j!_g8g7@4*na0ii&r+#7(jxu'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -34,10 +32,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ]
 }
-SESSION_COOKIE_HTTPONLY = False
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '662028240268-rfjv7qr40r4dr6lm1fgg7ki8ad1nug7u.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '9-rpG0jAtkLghGd01OOlsZq8'
 
+SESSION_COOKIE_HTTPONLY = False
 
 TEMPLATE_DIR = BASE_DIR / 'server/templates'
 
@@ -55,17 +51,32 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static'
 
 
-LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'home'
-LOGOUT_URL = 'logout'
-LOGOUT_REDIRECT_URL = 'login'
+LOGIN_URL = '/login'
+LOGIN_REDIRECT_URL = '/home'
+LOGOUT_URL = '/logout'
+LOGOUT_REDIRECT_URL = '/login'
 
 AUTHENTICATION_BACKENDS = [
     'social_core.backends.google.GoogleOAuth2',
+    # 'users.social_backend.CustomGoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.social_user',
+    'users.social_backend.get_username',
+    # 'social_core.pipeline.user.get_username',
+    # 'social_core.pipeline.social_auth.associate_by_email',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+)
+
 
 AUTH_USER_MODEL = 'users.User'
 

@@ -103,7 +103,6 @@ function SetupsPage({ sessionId }) {
   if (sessionId) {
     return <GetSetups />;
   } else {
-    console.log(sessionId);
     return (
       <div>
         <p>You are not autorised</p>
