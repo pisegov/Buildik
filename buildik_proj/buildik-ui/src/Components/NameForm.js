@@ -16,7 +16,7 @@ export default function NameForm({ setSetup, initList }) {
     try {
       axios({
         method: 'POST',
-        url: 'http://127.0.0.1:8000/api/setups/',
+        url: '/api/setups/',
         headers: {
           'X-CSRFToken': csrftoken,
         },
@@ -26,7 +26,7 @@ export default function NameForm({ setSetup, initList }) {
         initItemList.map(pair => {
           axios({
             method: 'POST',
-            url: 'http://127.0.0.1:8000/api/setups/setup_items/',
+            url: '/api/setups/setup_items/',
             headers: {
               'X-CSRFToken': csrftoken,
             },
@@ -42,7 +42,7 @@ export default function NameForm({ setSetup, initList }) {
 
         axios({
           method: 'GET',
-          url: `http://127.0.0.1:8000/api/setups/${res.data.id}`,
+          url: `/api/setups/${res.data.id}`,
         }).then(response => {
           setSetup(response.data);
         });

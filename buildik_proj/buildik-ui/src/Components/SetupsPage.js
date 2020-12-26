@@ -12,7 +12,7 @@ function SetupsPage({ sessionId }) {
   useEffect(() => {
     axios({
       method: 'GET',
-      url: `http://127.0.0.1:8000/api/user/`,
+      url: `/api/user/`,
     }).then(response => {
       setUser(response.data);
     });
@@ -24,7 +24,7 @@ function SetupsPage({ sessionId }) {
     useEffect(() => {
       axios({
         method: 'GET',
-        url: `http://127.0.0.1:8000/api/setups/`,
+        url: `/api/setups/`,
       }).then(response => {
         setSetups(response.data);
       });
@@ -33,7 +33,7 @@ function SetupsPage({ sessionId }) {
     function deleteSetup(setup) {
       axios({
         method: 'DELETE',
-        url: `http://127.0.0.1:8000/api/setups/${setup.id}`,
+        url: `/api/setups/${setup.id}`,
         headers: {
           'X-CSRFToken': csrftoken,
         },
@@ -42,7 +42,7 @@ function SetupsPage({ sessionId }) {
           // Get updated setup
           axios({
             method: 'GET',
-            url: `http://127.0.0.1:8000/api/setups/`,
+            url: `/api/setups/`,
           }).then(response => {
             setSetups(response.data);
           });

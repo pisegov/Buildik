@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import SelectionModal from './Modal/SelectionModal';
-import axios from 'axios';
 import { Modal } from 'react-bootstrap';
 import NameForm from './NameForm';
 import Cookies from 'universal-cookie';

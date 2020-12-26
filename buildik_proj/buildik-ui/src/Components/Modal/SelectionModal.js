@@ -30,7 +30,7 @@ function SelectionModal({ category, setup, setSetup, itemList }) {
   useEffect(() => {
     axios({
       method: 'GET',
-      url: `http://127.0.0.1:8000/api/pccomponents/category-${category}/${urlTail}`,
+      url: `/api/pccomponents/category-${category}/${urlTail}`,
     }).then(response => {
       setCategoryComponents(response.data);
     });
@@ -51,7 +51,7 @@ function SelectionModal({ category, setup, setSetup, itemList }) {
       // Post the component to current setup
       axios({
         method: 'POST',
-        url: 'http://127.0.0.1:8000/api/setups/setup_items/',
+        url: '/api/setups/setup_items/',
         headers: {
           'X-CSRFToken': csrftoken,
         },
@@ -65,7 +65,7 @@ function SelectionModal({ category, setup, setSetup, itemList }) {
           // Get updated setup
           axios({
             method: 'GET',
-            url: `http://127.0.0.1:8000/api/setups/${setup.id}`,
+            url: `/api/setups/${setup.id}`,
           }).then(response => {
             setSetup(response.data);
           });
@@ -98,7 +98,7 @@ function SelectionModal({ category, setup, setSetup, itemList }) {
 
       axios({
         method: 'DELETE',
-        url: `http://127.0.0.1:8000/api/setups/setup_items/${link}`,
+        url: `/api/setups/setup_items/${link}`,
         headers: {
           'X-CSRFToken': csrftoken,
         },
@@ -107,7 +107,7 @@ function SelectionModal({ category, setup, setSetup, itemList }) {
           // Get updated setup
           axios({
             method: 'GET',
-            url: `http://127.0.0.1:8000/api/setups/${setup.id}`,
+            url: `/api/setups/${setup.id}`,
           }).then(response => {
             setSetup(response.data);
           });
