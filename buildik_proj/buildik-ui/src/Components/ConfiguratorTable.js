@@ -27,8 +27,8 @@ const configuratorCategories = [
 
 function ConfiguratorTable(props) {
   const [setup, setSetup] = useState(null);
-  const [setupID, setSetupID] = useState(null);
   const [initItemList, setInitItemList] = useState([]);
+  const [sessionId, setSessionId] = useState(null);
 
   useEffect(() => {
     const cookies = new Cookies();
@@ -41,6 +41,8 @@ function ConfiguratorTable(props) {
       }
     });
     setInitItemList(tempItemList);
+
+    setSessionId(cookies.get('sessionid'));
   }, []);
 
   const [showSave, setShowSave] = useState(false);
@@ -49,8 +51,31 @@ function ConfiguratorTable(props) {
 
   const setSetupWithID = setup => {
     setSetup(setup);
-    setSetupID(setup.id);
   };
+
+  function ModalContent() {
+    if (sessionId) {
+      return (
+        <>
+          <Modal.Header closeButton>
+            <Modal.Title>Назовите сборку</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <NameForm setSetup={setSetupWithID} initList={[initItemList, setInitItemList]} />
+          </Modal.Body>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <Modal.Header closeButton>
+            <Modal.Title>Вы не авторизованы</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Пожалуйста, войдите</Modal.Body>
+        </>
+      );
+    }
+  }
 
   return (
     <>
@@ -72,12 +97,7 @@ function ConfiguratorTable(props) {
       </div>
 
       <Modal show={showSave} onHide={handleClose} size="lg">
-        <Modal.Header closeButton>
-          <Modal.Title>Назовите сборку</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <NameForm setSetup={setSetupWithID} initList={[initItemList, setInitItemList]} />
-        </Modal.Body>
+        <ModalContent />
         <Modal.Footer>
           <Button variant="primary" onClick={handleClose}>
             Close
