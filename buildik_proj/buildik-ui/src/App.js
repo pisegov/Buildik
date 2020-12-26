@@ -5,7 +5,6 @@ import ConfiguratorTable from './Components/ConfiguratorTable';
 import Cookies from 'universal-cookie';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import SetupsPage from './Components/SetupsPage';
-import Login from './Components/Login';
 
 function App() {
   const cookies = new Cookies();
