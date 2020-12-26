@@ -67,7 +67,9 @@ function ConfiguratorTable(props) {
           );
         })}
       </ul>
-      <Button onClick={handleShow}>Save</Button>
+      <div style={{ marginLeft: 'auto', marginRight: '.5oem', width: '120px' }}>
+        <Button onClick={handleShow}>Сохранить</Button>
+      </div>
 
       <Modal show={showSave} onHide={handleClose} size="lg">
         <Modal.Header closeButton>
