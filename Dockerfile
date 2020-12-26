@@ -38,7 +38,9 @@ RUN pip install -r requirements.txt
 
 EXPOSE 8000
 
+# RUN export PORT="8000"
+
 # CMD ["source", "env/bin/activate"]
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["sh", "start-heroku.sh"]
 
 
