@@ -2,22 +2,93 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
-import { func } from 'prop-types';
 
-function Navbar({ isAutorised }) {
-  const [userData, setUserData] = useState([]);
+function Navbar({ sessionId }) {
+  function openLogin() {
+    if (sessionId) {
+      window.location.href = '/logout';
+    } else {
+      window.location.href = '/login';
+    }
+  }
 
-  useEffect(() => {
-    axios({
-      method: 'GET',
-      url: 'http://127.0.0.1:8000/api/user/',
-    }).then(response => {
-      setUserData(response.data);
-    });
-  }, []);
+  function openAdmin() {
+    window.location.href = '/admin';
+  }
+
+  function openAPI() {
+    window.location.href = '/api/docs';
+  }
+
+  function NavbarUserLinks() {
+    const [userIsStaff, setUserIsStaff] = useState([]);
+
+    useEffect(() => {
+      axios({
+        method: 'GET',
+        url: 'http://127.0.0.1:8000/api/user/',
+      }).then(response => {
+        setUserIsStaff(response.data.is_staff);
+      });
+    }, []);
+
+    if (userIsStaff) {
+      return (
+        <div>
+          <a className="navbar-brand" href="#">
+            <div className="nav-link" onClick={openAdmin}>
+              Администратор
+            </div>
+          </a>
+          <a className="navbar-brand" href="#">
+            <div className="nav-link" onClick={openAdmin}>
+              API
+            </div>
+          </a>
+          <a className="navbar-brand" href="#">
+            <Link className="nav-link" to={{ pathname: `/setups/`, fromDashboard: false }}>
+              Мои сборки
+            </Link>
+          </a>
+          <a className="navbar-brand" href="#">
+            <div className="nav-link" onClick={openLogin}>
+              Выйти
+            </div>
+          </a>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <a className="navbar-brand" href="#">
+            <Link className="nav-link" to={{ pathname: `/setups/`, fromDashboard: false }}>
+              Мои сборки
+            </Link>
+          </a>
+          <a className="navbar-brand" href="#">
+            <div className="nav-link" onClick={openLogin}>
+              Выйти
+            </div>
+          </a>
+        </div>
+      );
+    }
+  }
 
   function NavbarLinks() {
-    return <div></div>;
+    if (sessionId) {
+      return <NavbarUserLinks />;
+    } else {
+      return (
+        <div>
+          <a className="navbar-brand" href="#">
+            <div className="nav-link" onClick={openLogin}>
+              Войти
+            </div>
+          </a>
+        </div>
+      );
+    }
   }
 
   return (
@@ -25,28 +96,13 @@ function Navbar({ isAutorised }) {
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
           <a className="navbar-brand" href="#">
-            {/* <Link className="nav-link" to={{ pathname: `http://127.0.0.1:8000/`, fromDashboard: false }}>
-            </Link> */}
-            Buildik
+            <Link className="nav-link" to={{ pathname: `/`, fromDashboard: false }}>
+              Buildik
+            </Link>
           </a>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
           <div className="collapse navbar-collapse" id="navbarNav">
-            <div className="navbar-nav">
-              {/* {categories.map(c => (
-                <Link className="nav-link" to={{ pathname: `/category/${c.id}/`, fromDashboard: false }}>
-                  {c.name}
-                </Link>
-              ))} */}
+            <div className="navbar-nav" style={{ marginLeft: 'auto', marginRight: '3oem' }}>
+              <NavbarLinks />
             </div>
           </div>
         </div>
