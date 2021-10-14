@@ -14,7 +14,7 @@ Also there is:
 * Saving unfinished build on page refresh based on cookies
 
 # Check it out
-You can watch on it <a href="buildik.herokuapp.com/">here</a>
+You can watch on it <a href="https://buildik.herokuapp.com/">here</a>
 
 # Authors
 * Frontend - @pisegov
